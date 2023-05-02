@@ -1,16 +1,14 @@
-from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel
 
 
+class ChatType(str, Enum):
+    public = "public"
+    private = "private"
+    group = "group"
+
+
 class Chat(BaseModel):
     name: str
-    type: str
-    created_date: datetime
-
-
-class ChatInDB(Chat):
-    id: int
-
-    class Config:
-        orm_mode = True
+    type: ChatType

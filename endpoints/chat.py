@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from crud.chat import get_chat_by_id, create_new_chat, delete_chat_by_id, change_name_chat_by_id, get_chats
+from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id, get_chats
 from schemas.chat import Chat
 
 router = APIRouter(prefix="/chat")
@@ -18,7 +18,7 @@ async def get_chat(chat_id: int):
 
 @router.post("/new", response_model=Chat)
 async def create_chat(chat: Chat):
-    return create_new_chat(chat)
+    return crud_create_chat(chat)
 
 
 @router.put("/change_name/{chat_id}")

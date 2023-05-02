@@ -1,34 +1,23 @@
 from fastapi import APIRouter
 
-from crud.user import user_database
-from schemas.user import User, UserInDB
+from crud.user import get_users, create_user, change_name as crud_change_name
+from schemas.user import User
 
 
 router = APIRouter(prefix="/user")
 
 
-@router.get("/{user_id}")
-async def get_user(user_id: int):
-    return user_database[user_id-1]
+@router.get("/list")
+async def get_users():
+    return get_users()
 
 
-@router.post("/", response_model=UserInDB)
+@router.post("/new", response_model=User)
 async def create_user(user: User):
-    user_db = UserInDB(id=len(user_database)+1, **user.dict())
-    return user_db
+    return create_user(user)
 
 
-@router.put("/{user_id}", response_model=UserInDB)
-async def update_user(user_id: int, user: User):
-    user_db = user_database[user_id-1]
-    for param, value in user.dict().items():
-        user_db[param] = value
-
-    return user_db
-
-
-@router.delete("/{user_id}")
-async def update_user(user_id: int):
-    db = list(user_database)
-    del db[user_id-1]
+@router.put("/change_name/{user_id}")
+async def change_name(user_id: int, new_name: str):
+    return crud_change_name(user_id, new_name)
 

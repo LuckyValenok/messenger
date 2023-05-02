@@ -1,13 +1,6 @@
-from enum import Enum
-
 from core.db.models import Chat
 from core.db.session import get_session
-
-
-class ChatType(str, Enum):
-    public = "public"
-    private = "private"
-    group = "group"
+from schemas.chat import Chat as ChatSchema
 
 
 def get_chats() -> dict:
@@ -18,9 +11,9 @@ def get_chat_by_id(chat_id: int) -> Chat:
     return get_session().query(Chat).filter_by(id=chat_id).first()
 
 
-def create_new_chat(chat) -> Chat:
+def create_chat(chat: ChatSchema) -> Chat:
     try:
-        new_chat = Chat(name=chat.name, type=chat.type, created_date=chat.created_date)
+        new_chat = Chat(name=chat.name, type=chat.type)
         get_session().add(new_chat)
         return new_chat
     finally:
