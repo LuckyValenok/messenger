@@ -1,10 +1,17 @@
 from fastapi import APIRouter
 
-from crud.user import get_users, create_user, change_name as crud_change_name
+from crud.user import get_user_by_id as crud_get_user_by_id, \
+    get_users, create_user, change_name as crud_change_name
+
 from schemas.user import User
 
 
 router = APIRouter(prefix="/user")
+
+
+@router.get("/{user_id}")
+async def get_user_by_id(user_id: int):
+    return crud_get_user_by_id(user_id)
 
 
 @router.get("/list")

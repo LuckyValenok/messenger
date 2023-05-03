@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Text
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -12,6 +12,7 @@ class User(Base):
     login = Column(String)
     password = Column(String)
     name = Column(String)
+    deleted = Column(Boolean)
 
 
 class Chat(Base):
@@ -21,6 +22,7 @@ class Chat(Base):
     name = Column(String)
     created_date = Column(DateTime, server_default=func.now())
     type = Column(String)
+    removed = Column(Boolean)
 
 
 class UserChat(Base):
@@ -29,3 +31,14 @@ class UserChat(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     chat_id = Column(Integer, ForeignKey('chats.id'))
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_chat_id = Column(Integer, ForeignKey('users_chats.id'))
+    text = Column(Text)
+    created_date = Column(DateTime, server_default=func.now())
+    edited = Column(Boolean)
+    read = Column(Boolean)

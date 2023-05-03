@@ -1,9 +1,11 @@
+from typing import List
+
 from core.db.models import User
 from core.db.session import get_session
 from schemas.user import User as UserSchema
 
 
-def get_users() -> dict:
+def get_users() -> list[User]:
     return get_session().query(User).all()
 
 
