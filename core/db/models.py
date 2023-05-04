@@ -10,7 +10,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    login = Column(String)
+    login = Column(String, unique=True)
     password = Column(String)
     name = Column(String)
     deleted = Column(Boolean, nullable=False, default=False)
