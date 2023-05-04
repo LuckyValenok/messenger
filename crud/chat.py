@@ -1,14 +1,19 @@
+from fastapi import HTTPException
+
 from core.db.models import Chat
 from core.db.session import get_session
 from schemas.chat import Chat as ChatSchema
 
 
-def get_chats() -> dict:
-    return get_session().query(Chat).all()
+def get_chats():
+    return get_session().query(Chat).filter(Chat.removed == False).all()
 
 
 def get_chat_by_id(chat_id: int) -> Chat:
-    return get_session().query(Chat).filter_by(id=chat_id).first()
+    chat = get_session().query(Chat).filter((Chat.id == chat_id) & (Chat.removed == False)).first()
+    if chat is None:
+        raise HTTPException(204)
+    return chat
 
 
 def create_chat(chat: ChatSchema) -> Chat:
@@ -32,6 +37,8 @@ def change_name_chat_by_id(chat_id: int, new_name: str) -> str:
 
 def delete_chat_by_id(chat_id: int) -> Chat:
     try:
-        return get_session().query(Chat).filter_by(id=chat_id).delete()
+        chat = get_chat_by_id(chat_id)
+        chat.removed = True
+        return chat
     finally:
         get_session().commit()
