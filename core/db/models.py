@@ -12,7 +12,7 @@ class User(Base):
     login = Column(String)
     password = Column(String)
     name = Column(String)
-    deleted = Column(Boolean)
+    deleted = Column(Boolean, nullable=False, default=False)
 
 
 class Chat(Base):
@@ -22,7 +22,7 @@ class Chat(Base):
     name = Column(String)
     created_date = Column(DateTime, server_default=func.now())
     type = Column(String)
-    removed = Column(Boolean)
+    removed = Column(Boolean, nullable=False, default=False)
 
 
 class UserChat(Base):
