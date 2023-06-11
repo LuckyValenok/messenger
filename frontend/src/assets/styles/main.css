@@ -5,6 +5,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #ddb6fd , #fdd292);
+  background: #C0B2CB;
   font-family: 'Fahkwang', sans-serif;
 }

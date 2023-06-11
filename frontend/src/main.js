@@ -6,6 +6,7 @@ import './assets/styles/main.css'
 import {createRouter, createWebHistory} from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
 import SignUp from "@/components/SignUp/SignUp.vue";
+import Messenger from "@/components/MessengerVue/MessengerVue.vue";
 
 
 const router = createRouter({
@@ -20,6 +21,11 @@ const router = createRouter({
             path: '/signup',
             name: 'signup',
             component: SignUp
+        },
+        {
+            path: '/messenger',
+            name: 'messenger',
+            component: Messenger
         }
     ]
 })
