@@ -15,7 +15,6 @@ async def get_users():
     users = crud_get_users()
     if users is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return users
 
 
@@ -24,7 +23,6 @@ async def get_user_by_id(user_id: int = Depends(get_current_user)):
     user_id = crud_get_user_by_id(user_id)
     if user_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return user_id
 
 
@@ -43,5 +41,4 @@ async def delete_user(user_id: int = Depends(get_current_user)):
     user_id = delete_user_by_id(user_id)
     if user_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return user_id

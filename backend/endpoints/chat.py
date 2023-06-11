@@ -11,7 +11,6 @@ async def get_chats():
     chats = crud_get_chats()
     if chats is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return chats
 
 
@@ -20,7 +19,6 @@ async def get_chat(chat_id: int):
     chat_id = get_chat_by_id(chat_id)
     if chat_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return chat_id
 
 
@@ -39,5 +37,4 @@ async def delete_chat(chat_id: int):
     chat_id = delete_chat_by_id(chat_id)
     if chat_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return chat_id

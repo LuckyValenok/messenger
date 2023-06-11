@@ -11,7 +11,6 @@ async def get_messages_in_chat(chat_id: int):
     messages = crud_get_messages_in_chat(chat_id)
     if messages is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
     return messages
 
 
