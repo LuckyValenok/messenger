@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from core.db.models import Message, UserChat
 from core.db.session import get_session
@@ -15,7 +15,7 @@ def create_message(message: MessageSchema):
         user_chat = get_session().query(UserChat).filter(
             (UserChat.user_id == message.user_id) & (UserChat.chat_id == message.chat_id)).one()
         if user_chat is None:
-            raise HTTPException(204)
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
         message = Message(text=message.text)
         user_chat.messages.append(message)
         return message

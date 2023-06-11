@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from core.db.models import Chat
 from core.db.session import get_session
@@ -12,7 +12,7 @@ def get_chats():
 def get_chat_by_id(chat_id: int) -> Chat:
     chat = get_session().query(Chat).filter((Chat.id == chat_id) & (Chat.removed == False)).first()
     if chat is None:
-        raise HTTPException(204)
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
     return chat
 
 

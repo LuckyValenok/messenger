@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from core.db.models import User
 from core.db.session import get_session
@@ -13,12 +13,15 @@ def get_users():
 def get_user_by_id(user_id: int) -> User:
     user = get_session().query(User).filter((User.id == user_id) & (User.deleted == False)).first()
     if user is None:
-        raise HTTPException(204)
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
     return user
 
 
 def get_user_by_login(login: str):
-    return get_session().query(User).filter(User.login == login).one_or_none()
+    user = get_session().query(User).filter(User.login == login).one_or_none()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
+    return user
 
 
 def create_user(user: UserSchema) -> User:
