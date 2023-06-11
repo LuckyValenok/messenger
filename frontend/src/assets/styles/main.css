@@ -1,0 +1,10 @@
+@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500&display=swap');
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #ddb6fd , #fdd292);
+  font-family: 'Fahkwang', sans-serif;
+}
