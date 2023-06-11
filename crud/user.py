@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from core.db.models import User
 from core.db.session import get_session
 from schemas.user import User as UserSchema
+from security import get_password_hash, verify_password
 
 
 def get_users():
@@ -14,6 +15,10 @@ def get_user_by_id(user_id: int) -> User:
     if user is None:
         raise HTTPException(204)
     return user
+
+
+def get_user_by_login(login: str):
+    return get_session().query(User).filter(User.login == login).one_or_none()
 
 
 def create_user(user: UserSchema) -> User:
@@ -42,3 +47,12 @@ def delete_user_by_id(user_id: int) -> User:
         return user
     finally:
         get_session().commit()
+
+
+def authenticate(login: str, password: str):
+    user = get_user_by_login(login)
+    if not user:
+        return False
+    if not verify_password(password, user.hashed_password):
+        return False
+    return user
