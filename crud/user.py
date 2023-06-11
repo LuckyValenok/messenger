@@ -23,7 +23,8 @@ def get_user_by_login(login: str):
 
 def create_user(user: UserSchema) -> User:
     try:
-        new_user = User(name=user.name, login=user.login, password=user.password)
+        hashed_password = get_password_hash(user.password)
+        new_user = User(name=user.name, login=user.login, password=hashed_password)
         get_session().add(new_user)
         return new_user
     finally:
@@ -53,6 +54,6 @@ def authenticate(login: str, password: str):
     user = get_user_by_login(login)
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return False
     return user
