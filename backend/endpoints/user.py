@@ -26,7 +26,7 @@ async def create_user(user: User):
 
 
 @router.put("/change_name/{user_id}")
-async def change_name(new_name: str, user_id: int = Depends(get_current_user),):
+async def change_name(new_name: str, user_id: int = Depends(get_current_user)):
     return crud_change_name(user_id, new_name)
 
 
