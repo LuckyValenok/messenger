@@ -6,6 +6,7 @@ const state = {
 
 const getters = {
     isAuthenticated: state => !!state.user,
+    user: state => state.user,
 };
 
 const actions = {
@@ -17,17 +18,17 @@ const actions = {
         await dispatch('logIn', UserForm);
     },
     async logIn({dispatch}, user) {
-        let res = await axios.post('login', user);
+        let res = await axios.post('login/', user);
         await localStorage.setItem('access_token', res.data.access_token);
         await dispatch('viewMe');
     },
     async viewMe({commit}) {
-        let data = await axios.get('user/me', {
+        let res = await axios.get('user/me', {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('access_token')
             }
         })
-        await commit('setUser', data);
+        await commit('setUser', res.data);
     },
     async logOut({commit}) {
         let user = null;

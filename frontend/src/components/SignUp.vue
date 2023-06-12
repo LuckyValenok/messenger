@@ -21,11 +21,6 @@ import '../assets/styles/auth.less';
         <input name="password" v-model="user.password" type="password" minlength="6" placeholder="password"/>
       </div>
 
-      <div class="form-field">
-        <img src="../assets/img/icon2.png" alt="icon2"/>
-        <input name="password2" type="password" minlength="6" placeholder="password (again)"/>
-      </div>
-
       <button type="submit">Sign Up</button>
     </form>
     <h3>Already have an account?

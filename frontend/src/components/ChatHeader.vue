@@ -3,7 +3,6 @@
     <p class="navbar-title">Group chat: “whores”</p>
     <hr>
   </div>
-
 </template>
 
 <script>
@@ -13,11 +12,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.navbar{
+.navbar {
   background: #ffffff;
 }
-.navbar-title{
+
+.navbar-title {
   font-size: 20px;
 }
 
+p {
+  color: black;
+}
 </style>

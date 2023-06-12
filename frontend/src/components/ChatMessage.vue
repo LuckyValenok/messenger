@@ -7,9 +7,7 @@
         <p>12:00 PM | Aug 13</p>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -30,4 +28,7 @@ export default {
   margin-top: 25px;
 }
 
+p {
+  color: black;
+}
 </style>
