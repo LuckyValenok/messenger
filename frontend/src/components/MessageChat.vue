@@ -1,14 +1,11 @@
 <template>
-  <main>
-
+  <main v-if="chat">
     <section>
-      <ChatMessage/>
-      <ChatMessage/>
-      <ChatMessage/>
-      <ChatMessage/>
-      <ChatMessage/>
-      <ChatMessage/>
-
+      <div v-if="messages">
+        <div v-for="message in messages" :key="message.id">
+          <ChatMessage v-bind:message="message"/>
+        </div>
+      </div>
     </section>
     <header>
       <ChatHeader/>
@@ -17,18 +14,23 @@
       <MessageInput/>
     </footer>
   </main>
-
-
 </template>
 
 <script>
 import ChatMessage from "@/components/ChatMessage.vue";
 import ChatHeader from "@/components/ChatHeader.vue";
 import MessageInput from "@/components/MessageInput.vue";
+import {mapGetters} from "vuex";
 
 export default {
   name: "MessageChat",
-  components: {ChatMessage, ChatHeader, MessageInput}
+  components: {ChatMessage, ChatHeader, MessageInput},
+  computed: {
+    ...mapGetters({chat: "selectChat", messages: "selectChatMessages"}),
+  },
+  created: function () {
+    return this.$store.dispatch('loadMessages');
+  },
 }
 </script>
 
@@ -76,6 +78,4 @@ footer {
   position: fixed;
   height: 10%;
 }
-
-
 </style>

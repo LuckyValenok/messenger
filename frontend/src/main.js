@@ -10,7 +10,7 @@ const app = createApp(App)
 
 axios.defaults.baseURL = 'http://localhost:8000/';
 
-axios.interceptors.response.use(function (config) {
+axios.interceptors.response.use(config => {
         let token = localStorage.getItem('access_token');
 
         if (token) {
@@ -19,12 +19,14 @@ axios.interceptors.response.use(function (config) {
 
         return config;
     },
-    (error) => {
+    error => {
         if (error) {
             const originalRequest = error.config;
             if (error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
                 store.dispatch('logOut');
+                store.dispatch('clearMessages');
+                store.dispatch('clearAccessToken');
                 return router.push('/login')
             }
         }

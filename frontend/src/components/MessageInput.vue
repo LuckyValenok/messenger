@@ -1,23 +1,14 @@
 <template>
-
   <form class="input-form">
     <input type="text" placeholder="Write a message..." class="input-write"/>
     <button type="submit">
       <span>Send</span>
       <img src="../assets/img/arrow.png" alt="Image">
     </button>
-
-
   </form>
-
 </template>
 
-<script>
-
-</script>
-
 <style lang="less" scoped>
-
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -64,7 +55,5 @@ button:active {
 a {
   color: #ffffff;
 }
-
-
 </style>
   

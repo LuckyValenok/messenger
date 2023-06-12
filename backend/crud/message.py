@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import HTTPException, status
 
 from core.db.models import Message, UserChat
 from core.db.session import get_session

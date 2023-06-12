@@ -2,9 +2,9 @@
   <div class="message">
     <div>
       <div>
-        <p style="color: #411467">Alice (@alice56)</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore </p>
-        <p>12:00 PM | Aug 13</p>
+        <p style="color: #411467">{{ message.user.name }} (@{{ message.user.login }})</p>
+        <p>{{ message.text }}</p>
+        <p>{{ new Date(Date.parse(message.created_date)).toLocaleString() }}</p>
       </div>
     </div>
   </div>
@@ -12,7 +12,8 @@
 
 <script>
 export default {
-  name: "ChatMessage"
+  name: "ChatMessage",
+  props: ['message']
 }
 </script>
 

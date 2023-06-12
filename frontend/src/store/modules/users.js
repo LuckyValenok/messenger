@@ -17,23 +17,21 @@ const actions = {
         UserForm.append('password', form.password);
         await dispatch('logIn', UserForm);
     },
-    async logIn({dispatch}, user) {
+    async logIn({dispatch, commit}, user) {
         let res = await axios.post('login/', user);
-        await localStorage.setItem('access_token', res.data.access_token);
+        await commit('setAccessToken', res.data.access_token, { root: true })
         await dispatch('viewMe');
     },
-    async viewMe({commit}) {
+    async viewMe({commit, rootState}) {
         let res = await axios.get('user/me', {
             headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('access_token')
+                Authorization: 'Bearer ' + rootState.accessToken
             }
-        })
+        });
         await commit('setUser', res.data);
     },
-    async logOut({commit}) {
-        let user = null;
-        localStorage.removeItem('access_token')
-        commit('setUser', user);
+    logOut({commit}) {
+        commit('setUser', null, { root: true });
     }
 };
 

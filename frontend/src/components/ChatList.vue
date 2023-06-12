@@ -5,7 +5,11 @@
   <main>
     <ChatNavbar/>
     <ChatSearch/>
-    <ChatListItem/>
+    <div v-if="chats">
+      <div v-for="chat in chats" :key="chat.id" class="chats">
+        <ChatListItem v-bind:id="chat.id" v-bind:name="chat.name"/>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -13,10 +17,17 @@
 import ChatListItem from "@/components/ChatListItem.vue";
 import ChatSearch from "@/components/ChatSearch.vue";
 import ChatNavbar from "@/components/ChatListNavbar.vue";
+import {mapGetters} from "vuex";
 
 export default {
   name: "ChatList",
-  components: {ChatSearch, ChatListItem, ChatNavbar}
+  components: {ChatSearch, ChatListItem, ChatNavbar},
+  created: function () {
+    return this.$store.dispatch('getChats');
+  },
+  computed: {
+    ...mapGetters({chats: 'chats'}),
+  },
 }
 </script>
 

@@ -25,10 +25,9 @@ import '../assets/styles/auth.less';
 </template>
 
 <script>
-import {defineComponent} from 'vue';
 import {mapActions} from 'vuex';
 
-export default defineComponent({
+export default {
   name: 'LogIn',
   data() {
     return {
@@ -46,5 +45,5 @@ export default defineComponent({
       this.$router.push({name: 'messenger'});
     }
   }
-});
+};
 </script>

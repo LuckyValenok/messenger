@@ -53,3 +53,8 @@ class Message(Base):
     created_date = Column(DateTime, server_default=func.now())
     edited = Column(Boolean, nullable=False, default=False)
     read = Column(Boolean, nullable=False, default=False)
+
+    user = relationship(
+        "User", secondary="users_chats", primaryjoin="User.id == UserChat.user_id",
+        secondaryjoin="Message.user_chat_id == UserChat.id", uselist=False
+    )

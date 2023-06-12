@@ -19,10 +19,12 @@ export default {
     ...mapGetters({user: "user"}),
   },
   methods: {
-    ...mapActions(['logOut']),
+    ...mapActions(['logOut', 'clearMessages', 'clearAccessToken']),
     async logout() {
-      await this.logOut()
-      this.$router.push({name: 'login'})
+      this.logOut();
+      this.clearMessages();
+      this.clearAccessToken();
+      this.$router.push({name: 'login'});
     }
   }
 }

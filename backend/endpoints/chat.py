@@ -1,7 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 
-from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id, get_chats as crud_get_chats
-from schemas.chat import Chat
+from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id, \
+    get_chats as crud_get_chats
+from crud.user import get_user_by_id
+from deps import get_current_user
+from schemas.chat import Chat, ChatOutScheme
 
 router = APIRouter(prefix="/chat")
 
@@ -38,3 +41,8 @@ async def delete_chat(chat_id: int):
     if chat_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return chat_id
+
+
+@router.get("/me", response_model=list[ChatOutScheme])
+async def get_chat_by_user(user_id: int = Depends(get_current_user)):
+    return get_user_by_id(user_id).chats

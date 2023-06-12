@@ -30,10 +30,9 @@ import '../assets/styles/auth.less';
 </template>
 
 <script>
-import {defineComponent} from 'vue';
 import {mapActions} from 'vuex';
 
-export default defineComponent({
+export default {
   name: 'SignUp',
   data() {
     return {
@@ -55,5 +54,5 @@ export default defineComponent({
       }
     }
   }
-});
+};
 </script>
