@@ -12,7 +12,7 @@
 <script>
 import ChatListItem from "@/components/ChatListItem.vue";
 import ChatSearch from "@/components/ChatSearch.vue";
-import ChatNavbar from "@/components/ChatNavbar.vue";
+import ChatNavbar from "@/components/ChatListNavbar.vue";
 
 export default {
   name: "ChatList",

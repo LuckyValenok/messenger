@@ -1,12 +1,12 @@
 <template>
   <div class="navbar">
-    <div class="navbar-item">
+    <a href="#" class="navbar-item">
       <img src="../assets/img/icon4.png" alt="profile-img" style="width: 30px; "/>
       <p>username</p>
-    </div>
-    <div class="navbar-item">
+    </a>
+    <a href="#" class="navbar-item">
       <img src="../assets/img/logout.png" alt="profile-img" style="width: 25px;"/>
-    </div>
+    </a>
   </div>
 </template>
 
@@ -33,5 +33,9 @@ img {
 
 p {
   color: #33363F
+}
+
+a{
+  text-decoration: none;
 }
 </style>
