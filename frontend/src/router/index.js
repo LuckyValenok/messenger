@@ -18,7 +18,7 @@ const router = createRouter({
             component: LogIn
         },
         {
-            path: '/messenger',
+            path: '/',
             name: 'messenger',
             component: Messenger,
             meta: {
