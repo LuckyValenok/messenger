@@ -3,20 +3,15 @@
   </header>
 
   <main>
-    <ChatList />
-
+    <ChatList/>
   </main>
 </template>
 
 <script>
-import ChatList from "@/components/ChatList/ChatList.vue";
+import ChatList from "@/components/ChatList.vue";
 
 export default {
   name: "MessengerVue",
   components: {ChatList}
 }
 </script>
-
-<style scoped>
-
-</style>
