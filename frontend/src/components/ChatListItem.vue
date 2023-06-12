@@ -54,6 +54,14 @@ export default {
   list-style-type: none;
 }
 
+.chat-item:hover {
+  background-color: #F3F3F7;
+}
+
+.chat-item:active {
+  background-color: #ffffff;
+}
+
 a {
   text-decoration: none;
 }

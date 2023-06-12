@@ -10,6 +10,8 @@
         <ChatListItem v-bind:id="chat.id" v-bind:name="chat.name"/>
       </div>
     </div>
+
+    <button type="submit">+</button>
   </main>
 </template>
 
@@ -41,5 +43,15 @@ main {
   height: 100%;
   padding: 30px 30px 0 30px;
   overflow: auto;
+}
+
+button{
+  min-width: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 25%;
 }
 </style>
