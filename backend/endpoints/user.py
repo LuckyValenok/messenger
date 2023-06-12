@@ -6,7 +6,6 @@ from deps import get_current_user
 
 from schemas.user import User
 
-
 router = APIRouter(prefix="/user")
 
 
@@ -19,11 +18,8 @@ async def get_users():
 
 
 @router.get("/get/{user_id}")
-async def get_user_by_id(user_id: int = Depends(get_current_user)):
-    user_id = crud_get_user_by_id(user_id)
-    if user_id is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return user_id
+async def get_user_by_id(user_id: int):
+    return crud_get_user_by_id(user_id)
 
 
 @router.post("/new", response_model=User)
@@ -42,3 +38,8 @@ async def delete_user(user_id: int = Depends(get_current_user)):
     if user_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return user_id
+
+
+@router.get("/me")
+async def get_user_by_id(user_id: int = Depends(get_current_user)):
+    return crud_get_user_by_id(user_id)

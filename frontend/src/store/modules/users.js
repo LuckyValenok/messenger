@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 const state = {
-    login: null,
+    user: null,
 };
 
 const getters = {
-    isAuthenticated: state => !!state.login,
+    isAuthenticated: state => !!state.user,
 };
 
 const actions = {
@@ -17,14 +17,28 @@ const actions = {
         await dispatch('logIn', UserForm);
     },
     async logIn({dispatch}, user) {
-        await axios.post('login', user);
+        let res = await axios.post('login', user);
+        await localStorage.setItem('access_token', res.data.access_token);
         await dispatch('viewMe');
+    },
+    async viewMe({commit}) {
+        let data = await axios.get('user/me', {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('access_token')
+            }
+        })
+        await commit('setUser', data);
+    },
+    async logOut({commit}) {
+        let user = null;
+        localStorage.removeItem('access_token')
+        commit('setUser', user);
     }
 };
 
 const mutations = {
-    setUser(state, login) {
-        state.login = login;
+    setUser(state, user) {
+        state.user = user;
     },
 };
 

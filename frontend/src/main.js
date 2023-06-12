@@ -8,8 +8,29 @@ import store from './store';
 
 const app = createApp(App)
 
-axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://localhost:8000/';
+
+axios.interceptors.response.use(function (config) {
+        let token = localStorage.getItem('access_token');
+
+        if (token) {
+            config.headers['Authorization'] = 'Bearer ' + token
+        }
+
+        return config;
+    },
+    (error) => {
+        if (error) {
+            const originalRequest = error.config;
+            if (error.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+                store.dispatch('logOut');
+                return router.push('/login')
+            }
+        }
+    }
+)
+
 
 app.use(router)
 app.use(store)

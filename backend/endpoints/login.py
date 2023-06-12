@@ -9,7 +9,7 @@ router = APIRouter(prefix="/login")
 
 @router.post("/")
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends()
+        form_data: OAuth2PasswordRequestForm = Depends()
 ):
     user = authenticate(form_data.username, form_data.password)
     if not user:
