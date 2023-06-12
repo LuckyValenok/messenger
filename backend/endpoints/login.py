@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from crud.user import authenticate
-from deps import get_db
 from security import create_access_token
 
 router = APIRouter(prefix="/login")
