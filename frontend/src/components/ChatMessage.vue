@@ -11,9 +11,14 @@
 </template>
 
 <script>
+import {convertDateTimeFull} from "@/utils";
+
 export default {
   name: "ChatMessage",
-  props: ['message']
+  props: ['message'],
+  methods: {
+    convertDateTimeFull
+  }
 }
 </script>
 
