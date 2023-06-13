@@ -20,6 +20,7 @@ def create_chat(chat: ChatSchema, user: User) -> Chat:
         new_chat = Chat(name=chat.name, type=chat.chat_type)
         new_chat.users.append(user)
         get_session().add(new_chat)
+        get_session().refresh(new_chat)
         return new_chat
     finally:
         get_session().commit()

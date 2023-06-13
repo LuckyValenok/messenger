@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from core.db.models import User
 from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id
 from deps import get_current_user
+from endpoints.websocket import manager
 from exceptions.validation import UserDontHavePermissionsException
 from schemas.chat import Chat, ChatOutScheme, ChatWithMessagesOutScheme, ChatWithLastMessageOutScheme
 
@@ -18,8 +19,12 @@ async def get_chat(chat_id: int, user: User = Depends(get_current_user)):
 
 
 @router.post("/new", response_model=ChatOutScheme)
-async def create_chat(chat: Chat, user: User = Depends(get_current_user)):
-    return crud_create_chat(chat, user)
+async def create_chat(chat_scheme: Chat, user: User = Depends(get_current_user)):
+    chat = crud_create_chat(chat_scheme, user)
+    try:
+        return chat
+    finally:
+        await manager.broadcast(ChatOutScheme(**chat.__dict__).json(), user_id=user.id)
 
 
 @router.put("/change_name/{chat_id}")

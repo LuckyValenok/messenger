@@ -14,15 +14,15 @@ class ConnectionManager:
         self.active_connection_for_user = {}
         self.active_connections_for_chats = {}
 
-    async def connect(self, websocket: WebSocket, user=None, chat=None):
+    async def connect(self, websocket: WebSocket, user_id=None, chat_id=None):
         await websocket.accept()
-        if user:
-            self.active_connection_for_user[user.id] = websocket
-        if chat:
-            if chat.id in self.active_connections_for_chats:
-                self.active_connections_for_chats[chat.id].append(websocket)
+        if user_id:
+            self.active_connection_for_user[user_id] = websocket
+        if chat_id:
+            if chat_id in self.active_connections_for_chats:
+                self.active_connections_for_chats[chat_id].append(websocket)
             else:
-                self.active_connections_for_chats[chat.id] = [websocket]
+                self.active_connections_for_chats[chat_id] = [websocket]
 
     def disconnect(self, websocket: WebSocket):
         self.active_connection_for_user = {k: v for k, v in self.active_connection_for_user.items() if v == websocket}
@@ -31,14 +31,14 @@ class ConnectionManager:
                 v.remove(websocket)
 
     async def broadcast(self, message, user_id=None, chat_id=None):
-        if user_id:
-            await self.active_connection_for_user[user_id].send_text(message)
-        if chat_id:
-            for connection in self.active_connections_for_chats[chat_id]:
-                try:
+        try:
+            if user_id and user_id in self.active_connection_for_user:
+                await self.active_connection_for_user[user_id].send_text(message)
+            if chat_id:
+                for connection in self.active_connections_for_chats[chat_id]:
                     await connection.send_text(message)
-                except RuntimeError:
-                    continue
+        except RuntimeError:
+            pass
 
 
 manager = ConnectionManager()
@@ -51,7 +51,17 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str):
     chat = get_chat_by_id(chat_id)
     if user not in chat.users:
         raise UserDontHavePermissionsException
-    await manager.connect(websocket, chat=chat)
+    await manager.connect(websocket, chat_id=chat_id)
+    while websocket.client_state == WebSocketState.CONNECTED:
+        await websocket.receive()
+    manager.disconnect(websocket)
+
+
+@router.websocket("/user")
+async def websocket_endpoint(websocket: WebSocket, token: str):
+    user_id = await get_current_user_id(token)
+    user = get_user_by_id(user_id)
+    await manager.connect(websocket, user_id=user.id)
     while websocket.client_state == WebSocketState.CONNECTED:
         await websocket.receive()
     manager.disconnect(websocket)

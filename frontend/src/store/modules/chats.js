@@ -5,7 +5,8 @@ const state = {
     selectChatId: localStorage.getItem('selectChatId'),
     selectChat: null,
     filter: null,
-    connection: null,
+    connectionForMessages: null,
+    connectionForChats: null,
 };
 
 const getters = {
@@ -50,20 +51,36 @@ const actions = {
 const mutations = {
     setChats(state, chats) {
         state.chats = chats;
+
+        if (state.connectionForChats) {
+            state.connectionForChats.close();
+        }
+
+        console.log("Starting connection for chats to WebSocket Server")
+        state.connectionForChats = new WebSocket("ws://localhost:8000/ws/user?token=" + localStorage.getItem('access_token'));
+
+        state.connectionForChats.onmessage = event => {
+            let data = JSON.parse(event.data);
+            if (state.chats) {
+                state.chats.push(data);
+            } else {
+                state.chats = [data];
+            }
+        };
     },
     setSelectChat(state, chat) {
         state.selectChat = chat;
         state.selectChatId = chat.id;
         localStorage.setItem('selectChatId', chat.id);
 
-        if (state.connection) {
-            state.connection.close();
+        if (state.connectionForMessages) {
+            state.connectionForMessages.close();
         }
 
-        console.log("Starting connection to WebSocket Server")
-        state.connection = new WebSocket("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'));
+        console.log("Starting connection for messages to WebSocket Server")
+        state.connectionForMessages = new WebSocket("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'));
 
-        state.connection.onmessage = event => {
+        state.connectionForMessages.onmessage = event => {
             let data = JSON.parse(event.data);
             state.selectChat.messages.push(data);
         };
@@ -76,7 +93,7 @@ const mutations = {
         state.selectChatId = null;
         state.selectChat = null;
         state.filter = null;
-        state.connection = null;
+        state.connectionForMessages = null;
         localStorage.removeItem('selectChatId');
     }
 };
