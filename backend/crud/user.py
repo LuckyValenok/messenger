@@ -13,7 +13,7 @@ def get_users():
 def get_user_by_id(user_id: int) -> User:
     user = get_session().query(User).filter((User.id == user_id) & (User.deleted == False)).first()
     if user is None:
-        raise UserNotFoundException()
+        raise UserNotFoundException
     return user
 
 
@@ -40,9 +40,8 @@ def create_user(user_schema: UserSchema) -> User:
         get_session().commit()
 
 
-def change_name(user_id: int, new_name: str) -> str:
+def change_name(user: User, new_name: str) -> str:
     try:
-        user = get_user_by_id(user_id)
         prev_name = user.name
         user.name = new_name
         return prev_name
@@ -50,9 +49,8 @@ def change_name(user_id: int, new_name: str) -> str:
         get_session().commit()
 
 
-def delete_user_by_id(user_id: int) -> User:
+def delete_user(user: User) -> User:
     try:
-        user = get_user_by_id(user_id)
         user.deleted = True
         return user
     finally:
@@ -62,5 +60,5 @@ def delete_user_by_id(user_id: int) -> User:
 def authenticate(login: str, password: str):
     user = get_user_by_login(login)
     if not verify_password(password, user.password):
-        raise IncorrectPasswordException()
+        raise IncorrectPasswordException
     return user

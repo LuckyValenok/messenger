@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from crud.user import authenticate
+from exceptions.validation import IncorrectPasswordException
 from security import create_access_token
 
 router = APIRouter(prefix="/login")
@@ -13,11 +14,7 @@ async def login_for_access_token(
 ):
     user = authenticate(form_data.username, form_data.password)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect login or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise IncorrectPasswordException
 
     access_token = create_access_token(user_id=user.id)
     return {"access_token": access_token, "token_type": "bearer"}

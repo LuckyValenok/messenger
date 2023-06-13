@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-
-from core.db.models import Chat
+from core.db.models import Chat, User
 from core.db.session import get_session
+from exceptions.not_found import ChatNotFoundException
 from schemas.chat import Chat as ChatSchema
 
 
@@ -12,13 +11,14 @@ def get_chats():
 def get_chat_by_id(chat_id: int) -> Chat:
     chat = get_session().query(Chat).filter((Chat.id == chat_id) & (Chat.removed == False)).first()
     if chat is None:
-        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
+        raise ChatNotFoundException
     return chat
 
 
-def create_chat(chat: ChatSchema) -> Chat:
+def create_chat(chat: ChatSchema, user: User) -> Chat:
     try:
         new_chat = Chat(name=chat.name, type=chat.type)
+        new_chat.users += user
         get_session().add(new_chat)
         return new_chat
     finally:

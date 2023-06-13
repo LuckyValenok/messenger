@@ -1,7 +1,9 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 
 from core.db.session import session
+from crud.user import get_user_by_id
+from exceptions.validation import InvalidTokenException
 from security import get_user_from_jwt
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login/")
@@ -15,12 +17,12 @@ def get_db():
         db.close()
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user_id(token: str = Depends(oauth2_scheme)):
     user_id = get_user_from_jwt(token)
     if user_id is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise InvalidTokenException
     return user_id
+
+
+async def get_current_user(user_id: int = Depends(get_current_user_id)):
+    return get_user_by_id(user_id)

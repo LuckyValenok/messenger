@@ -3,7 +3,7 @@ from starlette.websockets import WebSocketState
 
 from crud.chat import get_chat_by_id
 from crud.user import get_user_by_id
-from deps import get_current_user
+from deps import get_current_user_id
 from exceptions.validation import UserDontHavePermissionsException
 
 router = APIRouter(prefix="/ws")
@@ -46,7 +46,7 @@ manager = ConnectionManager()
 
 @router.websocket("/chat/{chat_id}")
 async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str):
-    user_id = await get_current_user(token)
+    user_id = await get_current_user_id(token)
     user = get_user_by_id(user_id)
     chat = get_chat_by_id(chat_id)
     if user not in chat.users:
