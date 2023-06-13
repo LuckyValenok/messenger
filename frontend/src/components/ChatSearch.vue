@@ -1,8 +1,21 @@
 <template>
   <div>
-    <input type="search" placeholder="Search" aria-label="Search">
+    <input type="search" @input="event => onChange(event.target.value)" placeholder="Search" aria-label="Search">
   </div>
 </template>
+
+<script>
+import {mapMutations} from "vuex";
+
+export default {
+  methods: {
+    ...mapMutations(['setFilter']),
+    onChange(search) {
+      this.setFilter(search);
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 input {

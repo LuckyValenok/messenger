@@ -4,12 +4,14 @@ const state = {
     chats: null,
     selectChat: null,
     selectChatMessages: null,
+    filter: null
 };
 
 const getters = {
     chats: state => state.chats,
     selectChat: state => state.selectChat,
-    selectChatMessages: state => state.selectChatMessages
+    selectChatMessages: state => state.selectChatMessages,
+    filter: state => state.filter
 };
 
 const actions = {
@@ -44,10 +46,14 @@ const mutations = {
     setMessages(state, messages) {
         state.selectChatMessages = messages;
     },
+    setFilter(state, filter) {
+        state.filter = filter
+    },
     clearChats(state) {
         state.chats = null;
         state.selectChat = null;
         state.selectChatMessages = null;
+        state.filter = null;
     }
 };
 

@@ -6,7 +6,7 @@
     <ChatNavbar/>
     <ChatSearch/>
     <div v-if="chats">
-      <div v-for="chat in chats" :key="chat.id" class="chats">
+      <div v-for="chat in filteredChats" :key="chat.id" class="chats">
         <ChatListItem v-bind:id="chat.id" v-bind:name="chat.name"/>
       </div>
     </div>
@@ -28,7 +28,12 @@ export default {
     return this.$store.dispatch('getChats');
   },
   computed: {
-    ...mapGetters({chats: 'chats'}),
+    ...mapGetters({chats: 'chats', filter: 'filter'}),
+    filteredChats() {
+      return this.filter == null || this.filter === '' ? this.chats : this.chats.filter(chat => {
+        return chat.name.toLowerCase().includes(this.filter.toLowerCase())
+      })
+    }
   },
 }
 </script>
