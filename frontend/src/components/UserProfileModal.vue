@@ -15,7 +15,7 @@
             </div>
             <div class="flex-row" style="justify-content: flex-end; margin: 20px 5px 10px; ">
               <button type="submit" @click="closeModal">Change</button>
-              <button type="submit" style="background: #984343">Delete Profile</button>
+              <button class="btn-red" type="submit">Delete Profile</button>
             </div>
 
           </form>
@@ -43,7 +43,7 @@ export default {
 
 <style scoped lang="less">
 input{
-  background: #e2d8e5;
+  background: #e7dfe9;
   border-color: #9f9f9f;
 }
 
@@ -52,7 +52,7 @@ input::placeholder, h3 {
 }
 
 .modal {
-  background: #e2d8e5;
+  background: #e7dfe9;
   border-radius: 8px;
   padding: 15px;
   position: fixed;
@@ -77,4 +77,25 @@ input::placeholder, h3 {
 button {
   margin: 5px;
 }
+
+.btn-red{
+  background: #984343
+}
+
+.btn-red:hover {
+  background: #a76262;
+}
+
+.btn-red:active {
+  background: #ae3333;
+}
+
+button:hover {
+  background: #aa94b7;
+}
+
+button:active {
+  background: #6A557B;
+}
+
 </style>
