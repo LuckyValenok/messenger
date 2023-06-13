@@ -12,7 +12,7 @@
     </div>
 
     <div class="page">
-      <button type="submit" @click="showModal">+</button>
+      <button type="submit" @click="showModal" style="font-weight: bold">+</button>
       <NewChatModal ref="modal"></NewChatModal>
     </div>
   </main>

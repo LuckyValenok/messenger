@@ -1,7 +1,9 @@
 <template>
-<div v-if="show" class="modal-shadow" @click.self="closeModal">
+  <div v-if="show" class="modal-shadow" @click.self="closeModal">
     <div class="modal">
-      <div class="modal-close" @click="closeModal">&#10006;</div>
+      <div class="flex-row" style="justify-content: flex-end">
+        <button class="modal-close" type="submit" @click="closeModal">&#10006;</button>
+      </div>
       <slot name="title">
         <h3 class="modal-title">Edit profile</h3>
       </slot>
@@ -11,11 +13,11 @@
             <div class="form-field">
               <input name="name" type="text" placeholder="your name"/>
             </div>
-
-            <div class="form-field">
+            <div class="flex-row" style="justify-content: flex-end; margin: 20px 5px 10px; ">
+              <button type="submit" @click="closeModal">Change</button>
+              <button type="submit" style="background: #984343">Delete Profile</button>
             </div>
-            <button type="submit" @click="closeModal">Change</button>
-            <button type="submit" style="margin-bottom: 10px; background: #984343">Delete Profile</button>
+
           </form>
         </div>
       </slot>
@@ -26,7 +28,7 @@
 <script>
 
 export default {
-  name: "UserProfileModal",  data: function () {
+  name: "UserProfileModal", data: function () {
     return {
       show: false,
     }
@@ -59,18 +61,9 @@ export default {
   position: absolute;
 
   &-close {
-    border-radius: 50%;
-    color: #fff;
-    background: #6A557B;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 7px;
-    right: 7px;
     width: 30px;
     height: 30px;
-    cursor: pointer;
+    min-width: 30px;
   }
 
   &-title {
@@ -78,7 +71,7 @@ export default {
   }
 }
 
-button{
+button {
   margin: 5px;
 }
 </style>

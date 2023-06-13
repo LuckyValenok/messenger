@@ -1,7 +1,9 @@
 <template>
   <div v-if="show" @click.self="closeModal">
     <div class="modal">
-      <div class="modal-close" @click="closeModal">&#10006;</div>
+      <div class="flex-row" style="justify-content: flex-end">
+        <button class="modal-close" type="submit" @click="closeModal">&#10006;</button>
+      </div>
       <slot name="title">
         <h3 class="modal-title">New Group Chat</h3>
       </slot>
@@ -18,7 +20,7 @@
                 <option value="public">public</option>
               </select>
             </div>
-            <button type="submit" @click="submit">Create</button>
+            <button type="submit" @click="submit" style="margin: 20px 5px 10px; ">Create</button>
           </form>
         </div>
       </slot>
@@ -68,18 +70,9 @@ export default {
   position: absolute;
 
   &-close {
-    border-radius: 50%;
-    color: #fff;
-    background: #6A557B;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 7px;
-    right: 7px;
     width: 30px;
     height: 30px;
-    cursor: pointer;
+    min-width: 30px;
   }
 
   &-title {
@@ -96,5 +89,10 @@ select {
   background: #FFFFFF;
   font-family: 'Fahkwang', sans-serif;
   transition: all 200ms ease;
+}
+
+
+button {
+  margin: 5px;
 }
 </style>
