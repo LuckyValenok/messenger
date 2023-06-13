@@ -11,7 +11,10 @@
       </div>
     </div>
 
-    <button type="submit">+</button>
+    <div class="page">
+      <button type="submit" @click="showModal">+</button>
+      <NewChatModal ref="modal"></NewChatModal>
+    </div>
   </main>
 </template>
 
@@ -20,10 +23,16 @@ import ChatListItem from "@/components/ChatListItem.vue";
 import ChatSearch from "@/components/ChatSearch.vue";
 import ChatNavbar from "@/components/ChatListNavbar.vue";
 import {mapGetters} from "vuex";
+import NewChatModal from "@/components/NewChatModal.vue";
 
 export default {
   name: "ChatList",
-  components: {ChatSearch, ChatListItem, ChatNavbar},
+  components: {NewChatModal, ChatSearch, ChatListItem, ChatNavbar},
+  methods: {
+            showModal: function () {
+                this.$refs.modal.show = true
+            }
+  },
   created: async function () {
     try {
       await this.$store.dispatch('getChats');
