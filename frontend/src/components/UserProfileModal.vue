@@ -42,23 +42,26 @@ export default {
 </script>
 
 <style scoped lang="less">
-.modal-shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 999999;
+input{
+  background: #e2d8e5;
+  border-color: #9f9f9f;
+}
+
+input::placeholder, h3 {
+  color: #9f9f9f;
 }
 
 .modal {
-  background: #fff;
+  background: #e2d8e5;
   border-radius: 8px;
   padding: 15px;
-  left: 10%;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  margin: 30px;
   min-width: 420px;
   max-width: 480px;
-  position: absolute;
+  z-index: 999999;
 
   &-close {
     width: 30px;

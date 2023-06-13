@@ -24,7 +24,7 @@ export default {
 
 <style lang="less" scoped>
 .message {
-  background: rgba(214, 199, 225, 0.55);
+  background: #F3F3F7;
   border-radius: 10px;
   padding: 10px;
   min-width: 100px;

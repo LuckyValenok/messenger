@@ -20,7 +20,7 @@
                 <option value="public">public</option>
               </select>
             </div>
-            <button type="submit" @click="submit" style="margin: 20px 5px 10px; ">Create</button>
+            <button type="submit" @click="submit" style="margin: 20px 5px 10px;background-color: #6A557B;">Create</button>
           </form>
         </div>
       </slot>
@@ -60,14 +60,27 @@ export default {
 </script>
 
 <style scoped lang="less">
+input{
+  background: #e2d8e5;
+  border-color: #9f9f9f;
+}
+
+input::placeholder, h3 {
+  color: #9f9f9f;
+}
+
 .modal {
-  background: #fff;
+  background: #e2d8e5;
   border-radius: 8px;
   padding: 15px;
-  left: 10%;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  margin: 30px;
   min-width: 420px;
   max-width: 480px;
-  position: absolute;
+  z-index: 999999;
+
 
   &-close {
     width: 30px;
@@ -83,10 +96,10 @@ export default {
 select {
   border-style: solid;
   border-width: 0 0 1px;
-  border-color: #FFFFFF;
+  border-color: #e2d8e5;
   outline: none;
   font-size: 20px;
-  background: #FFFFFF;
+  background: #e2d8e5;
   font-family: 'Fahkwang', sans-serif;
   transition: all 200ms ease;
 }
@@ -95,4 +108,5 @@ select {
 button {
   margin: 5px;
 }
+
 </style>

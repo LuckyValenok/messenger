@@ -51,7 +51,7 @@ input {
   border-radius: 50px;
   border: none;
   font-size: larger;
-  width: 70%;
+  width: 90%;
 }
 
 
@@ -59,7 +59,7 @@ button {
   .flex-row();
   min-width: 130px;
   height: 45px;
-  background-color: #D6C7E1;
+  background-color: #c8b8cd;
   border-radius: 50px;
   font-size: larger;
   margin: 0;
@@ -67,7 +67,7 @@ button {
 }
 
 button:hover {
-  background-color: #C0B2CB;
+  background-color: #aa94b7;
 }
 
 button:active {

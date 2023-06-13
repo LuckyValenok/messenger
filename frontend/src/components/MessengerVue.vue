@@ -3,8 +3,9 @@
   </header>
 
   <main>
-    <ChatList v-if="user"/>
     <MessageChat v-if="chat"/>
+    <ChatList v-if="user"/>
+
   </main>
 </template>
 

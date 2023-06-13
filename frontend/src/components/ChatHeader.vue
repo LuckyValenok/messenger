@@ -21,9 +21,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.navbar {
-  background: #ffffff;
-}
 
 .navbar-title {
   font-size: 20px;
