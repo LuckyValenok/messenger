@@ -2,15 +2,17 @@
   <div class="chat-item" :class="{active: chat.id === selectChatId}">
     <a @click="select">
       <div class="chat-item-content">
-        <div>
-          <img :src="getImgUrl(chat.type)" alt="avatar">
-        </div>
-        <div class="chat-item-content--text">
-          <p style="color: #411467;">{{ chat.name }}</p>
-          <p v-if="chat.message">{{ chat.message.text }}</p>
+        <div class="flex-row">
+          <div>
+            <img :src="getImgUrl(chat.type)" alt="avatar">
+          </div>
+          <div class="chat-item-content--text">
+            <p style="color: #411467;">{{ chat.name }}</p>
+            <p v-if="chat.message">{{ chat.message.text }}</p>
+          </div>
         </div>
         <div v-if="chat.message">
-          <p style="width: 70px;">{{ convertDateTime(chat.message.created_date) }}</p>
+          <p style="width: 120px;">{{ convertDateTime(chat.message.created_date) }}</p>
         </div>
       </div>
     </a>
