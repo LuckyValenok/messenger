@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="modal-shadow" @click.self="closeModal">
+  <div v-if="show" @click.self="closeModal">
     <div class="modal">
       <div class="modal-close" @click="closeModal">&#10006;</div>
       <slot name="title">
@@ -58,15 +58,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-.modal-shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.9);
-}
-
 .modal {
   background: #fff;
   border-radius: 8px;
