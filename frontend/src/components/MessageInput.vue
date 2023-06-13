@@ -1,12 +1,31 @@
 <template>
-  <form class="input-form">
-    <input type="text" placeholder="Write a message..." class="input-write"/>
+  <form @submit.prevent="submit" class="input-form">
+    <input type="text" v-model="text" placeholder="Write a message..." class="input-write"/>
     <button type="submit">
       <span>Send</span>
       <img src="../assets/img/arrow.png" alt="Image">
     </button>
   </form>
 </template>
+
+<script>
+import {mapActions} from "vuex";
+
+export default {
+  data() {
+    return {
+      text: '',
+    };
+  },
+  methods: {
+    ...mapActions(['sendMessage']),
+    async submit() {
+      await this.sendMessage(this.text);
+      this.text = '';
+    }
+  }
+};
+</script>
 
 <style lang="less" scoped>
 .flex-row {

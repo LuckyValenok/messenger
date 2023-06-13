@@ -28,7 +28,6 @@ import '../assets/styles/auth.less';
 import {mapActions} from 'vuex';
 
 export default {
-  name: 'LogIn',
   data() {
     return {
       username: '',

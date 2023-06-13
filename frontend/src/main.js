@@ -9,16 +9,9 @@ import store from './store';
 const app = createApp(App)
 
 axios.defaults.baseURL = 'http://localhost:8000/';
+axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("access_token");
 
-axios.interceptors.response.use(config => {
-        let token = store.state.accessToken;
-
-        if (token) {
-            config.headers['Authorization'] = 'Bearer ' + token
-        }
-
-        return config;
-    },
+axios.interceptors.response.use(undefined,
     error => {
         if (error) {
             const originalRequest = error.config;
@@ -35,9 +28,8 @@ axios.interceptors.response.use(config => {
 
 app.mixin({
     methods: {
-        convertDateTime: function (datetime) {
-            return new Date(Date.parse(datetime)).toLocaleString();
-        },
+        convertDateTime: datetime => new Date(Date.parse(datetime)).toLocaleString(),
+        capitalize: word => word.charAt(0).toUpperCase() + word.slice(1),
     },
 })
 

@@ -2,6 +2,7 @@ import {createStore} from "vuex";
 
 import users from './modules/users';
 import chats from './modules/chats';
+import axios from "axios";
 
 export default createStore({
     state: {
@@ -24,6 +25,7 @@ export default createStore({
             } else {
                 localStorage.setItem('access_token', token);
             }
+            axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("access_token");
         },
     },
     modules: {

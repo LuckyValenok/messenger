@@ -21,12 +21,8 @@ const actions = {
         await commit('setAccessToken', res.data.access_token, {root: true})
         await dispatch('viewMe');
     },
-    async viewMe({commit, rootState}) {
-        let res = await axios.get('user/me', {
-            headers: {
-                Authorization: 'Bearer ' + rootState.accessToken
-            }
-        });
+    async viewMe({commit}) {
+        let res = await axios.get('user/me');
         await commit('setUser', res.data);
     },
     logOut({commit}) {

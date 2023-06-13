@@ -15,12 +15,8 @@ const getters = {
 };
 
 const actions = {
-    async getChats({commit, rootState}) {
-        let res = await axios.get('chat/me', {
-            headers: {
-                Authorization: 'Bearer ' + rootState.accessToken
-            }
-        });
+    async getChats({commit}) {
+        let res = await axios.get('chat/me');
         await commit('setChats', res.data);
     },
     async selectChat({commit}, id) {
@@ -32,6 +28,17 @@ const actions = {
     },
     clearMessages({commit}) {
         commit('clearState');
+    },
+    async sendMessage({rootState}, text) {
+        if (!rootState.chats.selectChat) {
+            return;
+        }
+        await axios.post('message/new', null, {
+            params: {
+                chat_id: rootState.chats.selectChat.id,
+                text: text
+            }
+        })
     }
 };
 
