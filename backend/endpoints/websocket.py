@@ -24,11 +24,13 @@ class ConnectionManager:
             else:
                 self.active_connections_for_chats[chat_id] = [websocket]
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connection_for_user = {k: v for k, v in self.active_connection_for_user.items() if v == websocket}
-        for _, v in self.active_connections_for_chats.items():
-            if websocket in v:
-                v.remove(websocket)
+    def disconnect(self, websocket: WebSocket, from_user, from_chats):
+        if from_user:
+            self.active_connection_for_user = {k: v for k, v in self.active_connection_for_user.items() if v == websocket}
+        if from_chats:
+            for _, v in self.active_connections_for_chats.items():
+                if websocket in v:
+                    v.remove(websocket)
 
     async def broadcast(self, message, user_id=None, chat_id=None):
         try:

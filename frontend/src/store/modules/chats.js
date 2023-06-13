@@ -80,6 +80,7 @@ const mutations = {
         state.connectionForMessages = new WebSocket("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'));
 
         state.connectionForMessages.onmessage = event => {
+            console.log(state.connectionForChats);
             let data = JSON.parse(event.data);
             state.selectChat.messages.push(data);
         };

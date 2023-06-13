@@ -31,6 +31,13 @@ export default {
   methods: {
     showModal: function () {
       this.$refs.modal.show = true
+    },
+    orderedChats: function () {
+      return this.chats.sort(
+          (a, b) => a.message && !b.message ? 1 :
+              !a.message && b.message ? -1 : !a.message && !b.message ?
+                  Date.parse(a.created_date) - Date.parse(b.created_date) : Date.parse(a.message.created_date) - Date.parse(b.message.created_date)
+      ).reverse();
     }
   },
   created: async function () {
@@ -43,7 +50,8 @@ export default {
   computed: {
     ...mapGetters({chats: 'chats', filter: 'filter'}),
     filteredChats() {
-      return this.filter == null || this.filter === '' ? this.chats : this.chats.filter(chat => {
+      let chats = this.orderedChats();
+      return this.filter == null || this.filter === '' ? chats : chats.filter(chat => {
         return chat.name.toLowerCase().includes(this.filter.toLowerCase())
       })
     }

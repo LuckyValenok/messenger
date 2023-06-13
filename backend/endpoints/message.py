@@ -32,7 +32,10 @@ async def create_message(chat_id: int, text: str, user: User = Depends(get_curre
         return message
     finally:
         await manager.broadcast(MessageWithUserOutScheme(**message.__dict__, user=message.user).json(), chat_id=chat_id)
-        await manager.broadcast(ChatWithLastMessageOutScheme(**message.chat.__dict__, message=message).json(), user_id=user.id)
+        scheme = ChatWithLastMessageOutScheme(**message.chat.__dict__, message=message).json()
+        for user in message.chat.users:
+            print(user)
+            await manager.broadcast(scheme, user_id=user.id)
 
 
 @router.get("/last/{chat_id}", response_model=MessageOutScheme)
