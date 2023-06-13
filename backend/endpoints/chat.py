@@ -43,11 +43,16 @@ async def delete_chat(chat_id: int):
     return chat_id
 
 
-@router.get("/me", response_model=list[ChatWithLastMessageOutScheme])
+@router.get("/me")
 async def get_chat_by_user(user_id: int = Depends(get_current_user)):
     return_list = []
     chats = get_user_by_id(user_id).chats
     for chat in chats:
-        message = chat.messages[0] if len(chat.messages) else None
-        return_list.append(ChatWithLastMessageOutScheme(id=chat.id, name=chat.name, type=chat.type, created_date=chat.created_date, removed=chat.removed, message=message))
+        if len(chat.messages):
+            return_list.append(
+                ChatWithLastMessageOutScheme(id=chat.id, name=chat.name, type=chat.type, created_date=chat.created_date,
+                                             removed=chat.removed, message=chat.messages[-1]))
+        else:
+            return_list.append(ChatOutScheme(id=chat.id, name=chat.name, type=chat.type, created_date=chat.created_date,
+                                             removed=chat.removed))
     return return_list

@@ -20,8 +20,11 @@ export default {
   methods: {
     ...mapActions(['sendMessage']),
     async submit() {
-      await this.sendMessage(this.text);
-      this.text = '';
+      this.text = this.text.trim();
+      if (this.text) {
+        await this.sendMessage(this.text);
+        this.text = '';
+      }
     }
   }
 };

@@ -1,4 +1,5 @@
-from fastapi import WebSocket, WebSocketDisconnect, APIRouter
+from fastapi import WebSocket, APIRouter
+from starlette.websockets import WebSocketState
 
 from crud.chat import get_chat_by_id
 from crud.user import get_user_by_id
@@ -29,12 +30,15 @@ class ConnectionManager:
             if websocket in v:
                 v.remove(websocket)
 
-    async def broadcast(self, message: str, user_id=None, chat_id=None):
+    async def broadcast(self, message, user_id=None, chat_id=None):
         if user_id:
             await self.active_connection_for_user[user_id].send_text(message)
         if chat_id:
             for connection in self.active_connections_for_chats[chat_id]:
-                await connection.send_text(message)
+                try:
+                    await connection.send_text(message)
+                except RuntimeError:
+                    continue
 
 
 manager = ConnectionManager()
@@ -48,9 +52,6 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str):
     if user not in chat.users:
         raise UserDontHavePermissionsException
     await manager.connect(websocket, chat=chat)
-    try:
-        while True:
-            await websocket.receive()
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        print('disconnect')
+    while websocket.client_state == WebSocketState.CONNECTED:
+        await websocket.receive()
+    manager.disconnect(websocket)

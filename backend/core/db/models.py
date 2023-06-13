@@ -60,6 +60,6 @@ class Message(Base):
     read = Column(Boolean, nullable=False, default=False)
 
     user = relationship(
-        "User", secondary="users_chats", primaryjoin="User.id == UserChat.user_id",
-        secondaryjoin="Message.user_chat_id == UserChat.id", uselist=False
+        "User", secondary="users_chats", primaryjoin="Message.user_chat_id == UserChat.id",
+        secondaryjoin="User.id == UserChat.user_id", uselist=False
     )
