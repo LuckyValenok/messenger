@@ -29,9 +29,9 @@ export default {
   name: "ChatList",
   components: {NewChatModal, ChatSearch, ChatListItem, ChatNavbar},
   methods: {
-            showModal: function () {
-                this.$refs.modal.show = true
-            }
+    showModal: function () {
+      this.$refs.modal.show = true
+    }
   },
   created: async function () {
     try {

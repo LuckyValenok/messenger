@@ -14,7 +14,7 @@ class ChatType(str, Enum):
 
 class Chat(BaseModel):
     name: str
-    type: ChatType
+    chat_type: ChatType
 
     class Config:
         orm_mode = True

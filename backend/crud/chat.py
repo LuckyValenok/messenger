@@ -17,8 +17,8 @@ def get_chat_by_id(chat_id: int) -> Chat:
 
 def create_chat(chat: ChatSchema, user: User) -> Chat:
     try:
-        new_chat = Chat(name=chat.name, type=chat.type)
-        new_chat.users += user
+        new_chat = Chat(name=chat.name, type=chat.chat_type)
+        new_chat.users.append(user)
         get_session().add(new_chat)
         return new_chat
     finally:

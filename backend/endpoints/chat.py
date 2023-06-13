@@ -17,7 +17,7 @@ async def get_chat(chat_id: int, user: User = Depends(get_current_user)):
     return chat
 
 
-@router.post("/new", response_model=Chat)
+@router.post("/new", response_model=ChatOutScheme)
 async def create_chat(chat: Chat, user: User = Depends(get_current_user)):
     return crud_create_chat(chat, user)
 
@@ -30,7 +30,7 @@ async def change_name_chat(chat_id: int, new_name: str, user: User = Depends(get
     return change_name_chat_by_id(chat_id, new_name)
 
 
-@router.delete("/delete/{chat_id}", response_model=Chat)
+@router.delete("/delete/{chat_id}")
 async def delete_chat(chat_id: int, user: User = Depends(get_current_user)):
     chat = get_chat_by_id(chat_id)
     if user not in chat.users:

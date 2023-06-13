@@ -23,7 +23,9 @@ const actions = {
     },
     async viewMe({commit}) {
         let res = await axios.get('user/me');
-        await commit('setUser', res.data);
+        if (res.data) {
+            await commit('setUser', res.data);
+        }
     },
     logOut({commit}) {
         commit('setUser', null);

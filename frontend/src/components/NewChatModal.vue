@@ -9,39 +9,52 @@
         <div class="modal-content">
           <form>
             <div class="form-field">
-              <input name="name" type="text" placeholder="chat name"/>
+              <input name="name" v-model="name" type="text" placeholder="chat name"/>
             </div>
 
             <div class="form-field">
-              <select id="type" name="type">
+              <select id="type" v-model="chatType" name="type">
                 <option value="private">private</option>
                 <option value="public">public</option>
               </select>
             </div>
-            <button type="submit" @click="closeModal">Create</button>
+            <button type="submit" @click="submit">Create</button>
           </form>
         </div>
       </slot>
     </div>
   </div>
-
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "NewChatModal",
   data: function () {
     return {
-      show: false
+      show: false,
+      name: '',
+      chatType: 'private',
     }
   },
   methods: {
+    ...mapActions(['createChat']),
     closeModal: function () {
-      this.show = false
+      this.show = false;
+    },
+    submit: async function () {
+      this.closeModal();
+      if (!this.name) {
+        return;
+      }
+      await this.createChat({
+        name: this.name,
+        chat_type: this.chatType
+      });
     }
   }
 }
-
 </script>
 
 <style scoped lang="less">
@@ -83,7 +96,7 @@ export default {
   }
 }
 
-select{
+select {
   border-style: solid;
   border-width: 0 0 1px;
   border-color: #FFFFFF;

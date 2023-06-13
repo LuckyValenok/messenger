@@ -30,16 +30,20 @@ const actions = {
     clearMessages({commit}) {
         commit('clearState');
     },
-    async sendMessage({rootState}, text) {
-        if (!rootState.chats.selectChat) {
+    async sendMessage({state}, text) {
+        if (!state.selectChat) {
             return;
         }
         await axios.post('message/new', null, {
             params: {
-                chat_id: rootState.chats.selectChat.id,
+                chat_id: state.selectChat.id,
                 text: text
             }
-        })
+        });
+    },
+    async createChat({commit}, data) {
+        let res = await axios.post('chat/new', data);
+        await commit('setSelectChat', res.data);
     }
 };
 
@@ -66,9 +70,6 @@ const mutations = {
     },
     setFilter(state, filter) {
         state.filter = filter
-    },
-    setConnection(state, connection) {
-        state.connection = connection;
     },
     clearState(state) {
         state.chats = null;
