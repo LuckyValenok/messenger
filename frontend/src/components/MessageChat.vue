@@ -28,23 +28,6 @@ export default {
   computed: {
     ...mapGetters({chat: "selectChat", token: "accessToken", chatId: "selectChatId"}),
   },
-  data() {
-    return {
-      connection: null,
-    }
-  },
-  created: function () {
-    if (!this.chatId) {
-      return;
-    }
-    console.log("Starting connection to WebSocket Server")
-    this.connection = new WebSocket("ws://localhost:8000/ws/chat/" + this.chatId + "?token=" + this.token)
-
-    this.connection.onmessage = event => {
-      let data = JSON.parse(event.data);
-      this.chat.messages.push(data);
-    }
-  }
 }
 </script>
 

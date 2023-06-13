@@ -4,7 +4,8 @@ const state = {
     chats: null,
     selectChatId: localStorage.getItem('selectChatId'),
     selectChat: null,
-    filter: null
+    filter: null,
+    connection: null,
 };
 
 const getters = {
@@ -50,15 +51,31 @@ const mutations = {
         state.selectChat = chat;
         state.selectChatId = chat.id;
         localStorage.setItem('selectChatId', chat.id);
+
+        if (state.connection) {
+            state.connection.close();
+        }
+
+        console.log("Starting connection to WebSocket Server")
+        state.connection = new WebSocket("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'));
+
+        state.connection.onmessage = event => {
+            let data = JSON.parse(event.data);
+            state.selectChat.messages.push(data);
+        };
     },
     setFilter(state, filter) {
         state.filter = filter
+    },
+    setConnection(state, connection) {
+        state.connection = connection;
     },
     clearState(state) {
         state.chats = null;
         state.selectChatId = null;
         state.selectChat = null;
         state.filter = null;
+        state.connection = null;
         localStorage.removeItem('selectChatId');
     }
 };
