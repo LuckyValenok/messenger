@@ -10,12 +10,18 @@ const router = createRouter({
         {
             path: '/signup',
             name: 'signup',
-            component: SignUp
+            component: SignUp,
+            meta: {
+                requiresAuth: false
+            }
         },
         {
             path: '/login',
             name: 'login',
-            component: LogIn
+            component: LogIn,
+            meta: {
+                requiresAuth: false
+            }
         },
         {
             path: '/',
@@ -35,6 +41,18 @@ router.beforeEach((to, _, next) => {
             return;
         }
         next({name: 'login'});
+    } else {
+        next();
+    }
+});
+
+router.beforeEach((to, _, next) => {
+    if (to.matched.some(record => !record.meta.requiresAuth)) {
+        if (store.getters.isAuthenticated) {
+            next({name: 'messenger'});
+            return;
+        }
+        next();
     } else {
         next();
     }
