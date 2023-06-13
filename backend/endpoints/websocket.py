@@ -26,7 +26,7 @@ class ConnectionManager:
 
     def disconnect(self, websocket: WebSocket):
         self.active_connection_for_user = {k: v for k, v in self.active_connection_for_user.items() if v == websocket}
-        for k, v in self.active_connection_for_user.items():
+        for _, v in self.active_connections_for_chats.items():
             if websocket in v:
                 v.remove(websocket)
 

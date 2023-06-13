@@ -3,7 +3,7 @@
     <a @click="select">
       <div class="chat-item-content">
         <div>
-          <img src="../assets/img/icon3.png" alt="avatar">
+          <img src="../assets/img/private_chat_icon.png" alt="avatar">
         </div>
         <div class="chat-item-content--text">
           <p style="color: #411467;">{{ chat.name }}</p>
@@ -36,16 +36,19 @@ export default {
 
 <style lang="less" scoped>
 .chat-item {
-  margin-top: 50px;
+  margin-top: 10px;
   list-style-type: none;
+  padding: 10px
 }
 
 .chat-item:hover {
   background-color: #FFFFFF;
+  border-radius: 10px;
 }
 
 .chat-item.active {
   background-color: #ffffff;
+  border-radius: 10px;
 }
 
 a {
@@ -59,11 +62,11 @@ a {
 
 .chat-item-content {
   .flex-row();
-  margin-right: 10px
+  margin-right: 10px;
+  justify-content: space-between;
 }
 
 .chat-item-content--text {
-  justify-content: space-between;
   margin: 0 20px 0 15px;
 }
 

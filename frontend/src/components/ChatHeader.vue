@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <p class="navbar-title">{{ capitalize(chat.type) }} chat "{{ chat.name }}"</p>
+    <p class="navbar-title">{{ capitalize(chat.type) }} chat «{{ chat.name }}»</p>
     <hr>
   </div>
 </template>

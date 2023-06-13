@@ -7,12 +7,12 @@ import '../assets/styles/auth.less';
     <h1>Log In</h1>
     <form @submit.prevent="submit">
       <div class="form-field">
-        <img src="../assets/img/icon1.png" alt="icon1"/>
+        <img src="../assets/img/login.png" alt="icon1"/>
         <input name="username" v-model="username" type="text" placeholder="username"/>
       </div>
 
       <div class="form-field">
-        <img src="../assets/img/icon2.png" alt="icon2"/>
+        <img src="../assets/img/password.png" alt="icon2"/>
         <input name="password" v-model="password" type="password" minlength="6" placeholder="password"/>
       </div>
 

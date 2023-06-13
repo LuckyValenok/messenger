@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <a href="#" class="navbar-item">
-      <img src="../assets/img/icon4.png" alt="profile-img" style="width: 30px; "/>
+      <img src="../assets/img/profile.png" alt="profile-img" style="width: 30px; "/>
       <p v-if="user">{{ user.name }} (@{{ user.login }})</p>
     </a>
     <a href="#" class="navbar-item">
