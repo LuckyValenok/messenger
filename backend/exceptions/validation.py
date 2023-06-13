@@ -14,3 +14,8 @@ class IncorrectPasswordException(HTTPException):
 class LoginAlreadyInUseException(HTTPException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_409_CONFLICT, detail="Login already in use")
+
+
+class UserDontHavePermissionsException(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail="You are not in this chat")

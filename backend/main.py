@@ -6,6 +6,7 @@ from endpoints.user import router as user_router
 from endpoints.login import router as login_router
 from endpoints.chat import router as chat_router
 from endpoints.message import router as message_router
+from endpoints.websocket import router as websocket_router
 
 app = FastAPI()
 
@@ -25,6 +26,7 @@ app.include_router(user_router, tags=["user"])
 app.include_router(login_router, tags=["login"])
 app.include_router(chat_router, tags=["chat"])
 app.include_router(message_router, tags=["message"])
+app.include_router(websocket_router, tags=["websocket"])
 
 
 @app.get("/")

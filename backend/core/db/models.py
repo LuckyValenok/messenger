@@ -1,9 +1,14 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Text
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, class_mapper
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
+
+def serialize(model):
+    columns = [c.key for c in class_mapper(model.__class__).columns]
+    return dict((c, f'{getattr(model, c)}') for c in columns)
 
 
 class User(Base):
