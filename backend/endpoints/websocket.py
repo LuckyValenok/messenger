@@ -24,7 +24,7 @@ class ConnectionManager:
             else:
                 self.active_connections_for_chats[chat_id] = [websocket]
 
-    def disconnect(self, websocket: WebSocket, from_user, from_chats):
+    def disconnect(self, websocket: WebSocket, from_user=False, from_chats=False):
         if from_user:
             self.active_connection_for_user = {k: v for k, v in self.active_connection_for_user.items() if v == websocket}
         if from_chats:
@@ -56,7 +56,7 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str):
     await manager.connect(websocket, chat_id=chat_id)
     while websocket.client_state == WebSocketState.CONNECTED:
         await websocket.receive()
-    manager.disconnect(websocket)
+    manager.disconnect(websocket, from_chats=True)
 
 
 @router.websocket("/user")
@@ -66,4 +66,4 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
     await manager.connect(websocket, user_id=user.id)
     while websocket.client_state == WebSocketState.CONNECTED:
         await websocket.receive()
-    manager.disconnect(websocket)
+    manager.disconnect(websocket, from_user=True)

@@ -29,13 +29,19 @@ axios.interceptors.response.use(undefined,
 app.mixin({
     methods: {
         convertDateTimeFull: datetime => {
-            let date = new Date(Date.parse(datetime));
-            const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+            let date = new Date(Date.parse(datetime) - new Date().getTimezoneOffset() * 60000);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            };
             return date.toLocaleDateString('en-US', options);
         },
         convertDateTime: datetime => {
             let now = new Date();
-            let date = new Date(Date.parse(datetime));
+            let date = new Date(Date.parse(datetime) - now.getTimezoneOffset() * 60000);
 
             const diff = now - date;
 
@@ -57,7 +63,7 @@ app.mixin({
             } else if (days < 7) {
                 return `${days} days ago`;
             } else {
-                const options = {year: 'numeric', month: 'long', day: 'numeric'};
+                const options = {year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Yekaterinburg'};
                 return date.toLocaleDateString('en-US', options);
             }
         },
