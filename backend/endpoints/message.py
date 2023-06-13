@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends
 
 from core.db.models import User
+from core.db.session import get_session
 from crud.chat import get_chat_by_id
 from crud.message import create_message as crud_create_message
 from deps import get_current_user
 from endpoints.websocket import manager
 from exceptions.validation import UserDontHavePermissionsException
+from schemas.chat import ChatWithLastMessageOutScheme
 from schemas.message import MessageWithUserOutScheme, MessageOutScheme
 
 router = APIRouter(prefix="/message")
@@ -26,11 +28,11 @@ async def get_messages_in_chat(chat_id: int, user: User = Depends(get_current_us
 async def create_message(chat_id: int, text: str, user: User = Depends(get_current_user)):
     message = crud_create_message(user.id, chat_id, text)
     try:
+        get_session().refresh(message)
         return message
     finally:
-        await manager.broadcast(
-            MessageWithUserOutScheme(id=message.id, text=message.text, edited=message.edited, read=message.read,
-                                     created_date=message.created_date, user=message.user).json(), chat_id=chat_id)
+        await manager.broadcast(MessageWithUserOutScheme(**message.__dict__, user=message.user).json(), chat_id=chat_id)
+        await manager.broadcast(ChatWithLastMessageOutScheme(**message.chat.__dict__, message=message).json(), user_id=user.id)
 
 
 @router.get("/last/{chat_id}", response_model=MessageOutScheme)

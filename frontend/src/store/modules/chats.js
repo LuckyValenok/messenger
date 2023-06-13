@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const state = {
-    chats: null,
+    chats: [],
     selectChatId: localStorage.getItem('selectChatId'),
     selectChat: null,
     filter: null,
@@ -60,11 +60,10 @@ const mutations = {
         state.connectionForChats = new WebSocket("ws://localhost:8000/ws/user?token=" + localStorage.getItem('access_token'));
 
         state.connectionForChats.onmessage = event => {
-            let data = JSON.parse(event.data);
-            if (state.chats) {
-                state.chats.push(data);
-            } else {
-                state.chats = [data];
+            let newChat = JSON.parse(event.data);
+            state.chats = state.chats.filter(chat => chat.id !== newChat.id);
+            if (!newChat.removed) {
+                state.chats.push(newChat);
             }
         };
     },
@@ -89,11 +88,12 @@ const mutations = {
         state.filter = filter
     },
     clearState(state) {
-        state.chats = null;
+        state.chats = [];
         state.selectChatId = null;
         state.selectChat = null;
         state.filter = null;
         state.connectionForMessages = null;
+        state.connectionForChats = null;
         localStorage.removeItem('selectChatId');
     }
 };

@@ -50,9 +50,7 @@ async def get_chat_by_user(user: User = Depends(get_current_user)):
     for chat in chats:
         if len(chat.messages):
             return_list.append(
-                ChatWithLastMessageOutScheme(id=chat.id, name=chat.name, type=chat.type, created_date=chat.created_date,
-                                             removed=chat.removed, message=chat.messages[-1]))
+                ChatWithLastMessageOutScheme(**chat.__dict__, message=chat.messages[-1]))
         else:
-            return_list.append(ChatOutScheme(id=chat.id, name=chat.name, type=chat.type, created_date=chat.created_date,
-                                             removed=chat.removed))
+            return_list.append(ChatOutScheme(**chat.__dict__))
     return return_list

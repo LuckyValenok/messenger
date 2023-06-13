@@ -63,3 +63,7 @@ class Message(Base):
         "User", secondary="users_chats", primaryjoin="Message.user_chat_id == UserChat.id",
         secondaryjoin="User.id == UserChat.user_id", uselist=False
     )
+    chat = relationship(
+        "Chat", secondary="users_chats", primaryjoin="Message.user_chat_id == UserChat.id",
+        secondaryjoin="Chat.id == UserChat.chat_id", uselist=False
+    )
