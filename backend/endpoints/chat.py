@@ -4,7 +4,7 @@ from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_ch
     get_chats as crud_get_chats
 from crud.user import get_user_by_id
 from deps import get_current_user
-from schemas.chat import Chat, ChatOutScheme
+from schemas.chat import Chat, ChatOutScheme, ChatWithMessagesOutScheme
 
 router = APIRouter(prefix="/chat")
 
@@ -17,7 +17,7 @@ async def get_chats():
     return chats
 
 
-@router.get("/get/{chat_id}")
+@router.get("/get/{chat_id}", response_model=ChatWithMessagesOutScheme)
 async def get_chat(chat_id: int):
     chat_id = get_chat_by_id(chat_id)
     if chat_id is None:

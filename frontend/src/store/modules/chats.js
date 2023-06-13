@@ -3,14 +3,12 @@ import axios from 'axios';
 const state = {
     chats: null,
     selectChat: null,
-    selectChatMessages: null,
     filter: null
 };
 
 const getters = {
     chats: state => state.chats,
     selectChat: state => state.selectChat,
-    selectChatMessages: state => state.selectChatMessages,
     filter: state => state.filter
 };
 
@@ -27,10 +25,6 @@ const actions = {
         let res = await axios.get('chat/get/' + id);
         await commit('selectChat', res.data);
     },
-    async loadMessages({commit, state}) {
-        let res = await axios.get('message/get/' + state.selectChat.id);
-        await commit('setMessages', res.data);
-    },
     clearMessages({commit}) {
         commit('clearChats', { root: true });
     }
@@ -42,9 +36,6 @@ const mutations = {
     },
     selectChat(state, chat) {
         state.selectChat = chat;
-    },
-    setMessages(state, messages) {
-        state.selectChatMessages = messages;
     },
     setFilter(state, filter) {
         state.filter = filter

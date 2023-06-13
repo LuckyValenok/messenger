@@ -1,8 +1,8 @@
 <template>
   <main v-if="chat">
     <section>
-      <div v-if="messages">
-        <div v-for="message in messages" :key="message.id">
+      <div v-if="chat.messages">
+        <div v-for="message in chat.messages" :key="message.id">
           <ChatMessage v-bind:message="message"/>
         </div>
       </div>
@@ -20,17 +20,22 @@
 import ChatMessage from "@/components/ChatMessage.vue";
 import ChatHeader from "@/components/ChatHeader.vue";
 import MessageInput from "@/components/MessageInput.vue";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "MessageChat",
   components: {ChatMessage, ChatHeader, MessageInput},
   computed: {
-    ...mapGetters({chat: "selectChat", messages: "selectChatMessages"}),
+    ...mapGetters({chat: "selectChat"}),
   },
-  created: function () {
-    return this.$store.dispatch('loadMessages');
+  created: async function () {
+    if (this.chat) {
+      await this.selectChat(this.chat.id);
+    }
   },
+  methods: {
+    ...mapActions(['selectChat'])
+  }
 }
 </script>
 

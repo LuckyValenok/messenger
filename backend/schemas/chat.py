@@ -3,6 +3,8 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from schemas.message import MessageWithUserOutScheme
+
 
 class ChatType(str, Enum):
     public = "public"
@@ -24,6 +26,18 @@ class ChatOutScheme(BaseModel):
     type: ChatType
     created_date: datetime
     removed: bool
+
+    class Config:
+        orm_mode = True
+
+
+class ChatWithMessagesOutScheme(BaseModel):
+    id: int
+    name: str
+    type: ChatType
+    created_date: datetime
+    removed: bool
+    messages: list[MessageWithUserOutScheme]
 
     class Config:
         orm_mode = True
