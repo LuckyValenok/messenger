@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-item">
+  <div class="chat-item" :class="{active: chat.id === selectChatId}">
     <a @click="select">
       <div class="chat-item-content">
         <div>
@@ -18,10 +18,13 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   props: ['chat'],
+  computed: {
+    ...mapGetters({selectChatId: "selectChatId"}),
+  },
   methods: {
     ...mapActions(['selectChat']),
     select() {
@@ -38,10 +41,10 @@ export default {
 }
 
 .chat-item:hover {
-  background-color: #F3F3F7;
+  background-color: #FFFFFF;
 }
 
-.chat-item:active {
+.chat-item.active {
   background-color: #ffffff;
 }
 
