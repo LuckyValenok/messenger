@@ -4,7 +4,7 @@
       <div>
         <p style="color: #411467">{{ message.user.name }} (@{{ message.user.login }})</p>
         <p>{{ message.text }}</p>
-        <p>{{ new Date(Date.parse(message.created_date)).toLocaleString() }}</p>
+        <p>{{ convertDateTime(message.created_date) }}</p>
       </div>
     </div>
   </div>

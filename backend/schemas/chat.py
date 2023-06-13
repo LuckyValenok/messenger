@@ -31,12 +31,14 @@ class ChatOutScheme(BaseModel):
         orm_mode = True
 
 
-class ChatWithMessagesOutScheme(BaseModel):
-    id: int
-    name: str
-    type: ChatType
-    created_date: datetime
-    removed: bool
+class ChatWithLastMessageOutScheme(ChatOutScheme):
+    message: MessageWithUserOutScheme
+
+    class Config:
+        orm_mode = True
+
+
+class ChatWithMessagesOutScheme(ChatOutScheme):
     messages: list[MessageWithUserOutScheme]
 
     class Config:

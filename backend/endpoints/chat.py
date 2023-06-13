@@ -4,7 +4,7 @@ from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_ch
     get_chats as crud_get_chats
 from crud.user import get_user_by_id
 from deps import get_current_user
-from schemas.chat import Chat, ChatOutScheme, ChatWithMessagesOutScheme
+from schemas.chat import Chat, ChatOutScheme, ChatWithMessagesOutScheme, ChatWithLastMessageOutScheme
 
 router = APIRouter(prefix="/chat")
 
@@ -43,6 +43,11 @@ async def delete_chat(chat_id: int):
     return chat_id
 
 
-@router.get("/me", response_model=list[ChatOutScheme])
+@router.get("/me", response_model=list[ChatWithLastMessageOutScheme])
 async def get_chat_by_user(user_id: int = Depends(get_current_user)):
-    return get_user_by_id(user_id).chats
+    return_list = []
+    chats = get_user_by_id(user_id).chats
+    for chat in chats:
+        message = chat.messages[0] if len(chat.messages) else None
+        return_list.append(ChatWithLastMessageOutScheme(id=chat.id, name=chat.name, type=chat.type, created_date=chat.created_date, removed=chat.removed, message=message))
+    return return_list

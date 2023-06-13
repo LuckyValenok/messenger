@@ -7,7 +7,7 @@
     <ChatSearch/>
     <div v-if="chats">
       <div v-for="chat in filteredChats" :key="chat.id" class="chats">
-        <ChatListItem v-bind:id="chat.id" v-bind:name="chat.name"/>
+        <ChatListItem v-bind:chat="chat"/>
       </div>
     </div>
 
@@ -24,8 +24,12 @@ import {mapGetters} from "vuex";
 export default {
   name: "ChatList",
   components: {ChatSearch, ChatListItem, ChatNavbar},
-  created: function () {
-    return this.$store.dispatch('getChats');
+  created: async function () {
+    try {
+      await this.$store.dispatch('getChats');
+    } catch (e) {
+      console.log(e);
+    }
   },
   computed: {
     ...mapGetters({chats: 'chats', filter: 'filter'}),
@@ -50,7 +54,7 @@ main {
   overflow: auto;
 }
 
-button{
+button {
   min-width: 50px;
   width: 50px;
   height: 50px;

@@ -6,11 +6,11 @@
           <img src="../assets/img/icon3.png" alt="avatar">
         </div>
         <div class="chat-item-content--text">
-          <p style="color: #411467;">{{ name }}</p>
-          <p v-if="last_message">{{ last_message }}</p>
+          <p style="color: #411467;">{{ chat.name }}</p>
+          <p v-if="chat.message">{{ chat.message.text }}</p>
         </div>
-        <div v-if="time_last_message">
-          <p style="width: 70px;">{{ time_last_message }}</p>
+        <div v-if="chat.message">
+          <p style="width: 70px;">{{ convertDateTime(chat.message.created_date) }}</p>
         </div>
       </div>
     </a>
@@ -18,31 +18,14 @@
 </template>
 
 <script>
-import axios from "axios";
 import {mapActions} from "vuex";
 
 export default {
-  props: ['id', 'name'],
-  data() {
-    return {
-      last_message: '',
-      time_last_message: ''
-    };
-  },
-  created: async function () {
-    await axios.get('/message/last/' + this.id)
-        .then(value => {
-          let data = value.data;
-          if (data) {
-            this.last_message = data.text
-            this.time_last_message = new Date(Date.parse(data.created_date)).toLocaleString()
-          }
-        });
-  },
+  props: ['chat'],
   methods: {
     ...mapActions(['selectChat']),
-    async select() {
-      await this.selectChat(this.id);
+    select() {
+      this.selectChat(this.chat.id);
     }
   }
 }

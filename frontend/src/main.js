@@ -11,7 +11,7 @@ const app = createApp(App)
 axios.defaults.baseURL = 'http://localhost:8000/';
 
 axios.interceptors.response.use(config => {
-        let token = localStorage.getItem('access_token');
+        let token = store.state.accessToken;
 
         if (token) {
             config.headers['Authorization'] = 'Bearer ' + token
@@ -33,6 +33,13 @@ axios.interceptors.response.use(config => {
     }
 )
 
+app.mixin({
+    methods: {
+        convertDateTime: function (datetime) {
+            return new Date(Date.parse(datetime)).toLocaleString();
+        },
+    },
+})
 
 app.use(router)
 app.use(store)

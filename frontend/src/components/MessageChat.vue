@@ -20,7 +20,7 @@
 import ChatMessage from "@/components/ChatMessage.vue";
 import ChatHeader from "@/components/ChatHeader.vue";
 import MessageInput from "@/components/MessageInput.vue";
-import {mapActions, mapGetters} from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "MessageChat",
@@ -28,14 +28,6 @@ export default {
   computed: {
     ...mapGetters({chat: "selectChat"}),
   },
-  created: async function () {
-    if (this.chat) {
-      await this.selectChat(this.chat.id);
-    }
-  },
-  methods: {
-    ...mapActions(['selectChat'])
-  }
 }
 </script>
 

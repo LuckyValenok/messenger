@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     ...mapActions(['logOut', 'clearMessages', 'clearAccessToken']),
-    async logout() {
+    logout() {
       this.logOut();
       this.clearMessages();
       this.clearAccessToken();

@@ -5,7 +5,6 @@ const state = {
 };
 
 const getters = {
-    isAuthenticated: state => !!state.user,
     user: state => state.user,
 };
 
@@ -19,7 +18,7 @@ const actions = {
     },
     async logIn({dispatch, commit}, user) {
         let res = await axios.post('login/', user);
-        await commit('setAccessToken', res.data.access_token, { root: true })
+        await commit('setAccessToken', res.data.access_token, {root: true})
         await dispatch('viewMe');
     },
     async viewMe({commit, rootState}) {
@@ -31,7 +30,7 @@ const actions = {
         await commit('setUser', res.data);
     },
     logOut({commit}) {
-        commit('setUser', null, { root: true });
+        commit('setUser', null);
     }
 };
 
