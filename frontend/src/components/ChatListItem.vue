@@ -32,6 +32,7 @@ export default {
     ...mapGetters({selectChatId: "selectChatId"}),
   },
   created() {
+    this.getDate();
     setInterval(() => {
       this.getDate();
     }, 1000)
