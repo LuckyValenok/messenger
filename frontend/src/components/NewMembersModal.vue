@@ -1,23 +1,19 @@
 <template>
-  <div v-if="show" class="modal-shadow" @click.self="closeModal">
+  <div v-if="show" @click.self="closeModal">
     <div class="modal">
       <div class="flex-row" style="justify-content: flex-end">
         <button class="modal-close" type="submit" @click="closeModal">&#10006;</button>
       </div>
       <slot name="title">
-        <h3 class="modal-title">Edit profile</h3>
+        <h3 class="modal-title">Add new member</h3>
       </slot>
       <slot name="body">
         <div class="modal-content">
           <form>
             <div class="form-field">
-              <input name="name" type="text" placeholder="your name"/>
+              <input name="name" v-model="name" type="text" placeholder="username"/>
             </div>
-            <div class="flex-row" style="justify-content: flex-end; margin: 20px 5px 10px; ">
-              <button type="submit" @click="closeModal">Change</button>
-              <button class="btn-red" type="submit">Delete Profile</button>
-            </div>
-
+            <button type="submit" @click="submit" style="margin: 20px 5px 10px;">Add</button>
           </form>
         </div>
       </slot>
@@ -26,9 +22,8 @@
 </template>
 
 <script>
-
 export default {
-  name: "UserProfileModal", data: function () {
+  name: "NewMembersModal", data: function () {
     return {
       show: false,
     }
@@ -38,6 +33,7 @@ export default {
       this.show = false
     }
   }
+
 }
 </script>
 
@@ -72,22 +68,13 @@ input::placeholder, h3 {
   &-title {
     color: #6A557B;
   }
+
 }
 
 button {
   margin: 5px;
-}
 
-.btn-red {
-  background: #984343
-}
 
-.btn-red:hover {
-  background: #a76262;
-}
-
-.btn-red:active {
-  background: #ae3333;
 }
 
 button:hover {
@@ -97,5 +84,4 @@ button:hover {
 button:active {
   background: #6A557B;
 }
-
 </style>
