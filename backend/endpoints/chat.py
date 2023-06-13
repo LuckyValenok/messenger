@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from core.db.models import User
+from core.db.session import get_session
 from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id
 from deps import get_current_user
 from endpoints.websocket import manager
@@ -22,6 +23,7 @@ async def get_chat(chat_id: int, user: User = Depends(get_current_user)):
 async def create_chat(chat_scheme: Chat, user: User = Depends(get_current_user)):
     chat = crud_create_chat(chat_scheme, user)
     try:
+        get_session().refresh(chat)
         return chat
     finally:
         await manager.broadcast(ChatOutScheme(**chat.__dict__).json(), user_id=user.id)
