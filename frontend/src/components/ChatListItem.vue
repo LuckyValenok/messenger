@@ -3,7 +3,7 @@
     <a @click="select">
       <div class="chat-item-content">
         <div>
-          <img src="../assets/img/private_chat_icon.png" alt="avatar">
+          <img :src="getImgUrl(chat.type)" alt="avatar">
         </div>
         <div class="chat-item-content--text">
           <p style="color: #411467;">{{ chat.name }}</p>
@@ -29,6 +29,9 @@ export default {
     ...mapActions(['selectChat']),
     select() {
       this.selectChat(this.chat.id);
+    },
+    getImgUrl(pic) {
+      return require('../assets/img/' + pic + '_chat_icon.png')
     }
   }
 }
