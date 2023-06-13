@@ -7,11 +7,15 @@
 
 <script>
 import {mapGetters} from "vuex";
+import {capitalize} from "@/utils";
 
 export default {
   name: "ChatHeader",
   computed: {
     ...mapGetters({chat: "selectChat"}),
+  },
+  methods: {
+    capitalize
   }
 }
 </script>

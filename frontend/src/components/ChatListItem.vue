@@ -10,7 +10,7 @@
           <p v-if="chat.message">{{ chat.message.text }}</p>
         </div>
         <div v-if="chat.message">
-          <p style="width: 70px;">{{ convertDateTime(chat.message.created_date) }}</p>
+          <p style="width: 70px;">{{ time }}</p>
         </div>
       </div>
     </a>
@@ -19,11 +19,22 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import {convertDateTime} from "@/utils";
 
 export default {
   props: ['chat'],
+  data() {
+    return {
+      time: '',
+    }
+  },
   computed: {
     ...mapGetters({selectChatId: "selectChatId"}),
+  },
+  created() {
+    setInterval(() => {
+      this.getDate();
+    }, 1000)
   },
   methods: {
     ...mapActions(['selectChat']),
@@ -32,6 +43,11 @@ export default {
     },
     getImgUrl(pic) {
       return require('../assets/img/' + pic + '_chat_icon.png')
+    },
+    getDate() {
+      if (this.chat.message) {
+        this.time = convertDateTime(this.chat.message.created_date)
+      }
     }
   }
 }
