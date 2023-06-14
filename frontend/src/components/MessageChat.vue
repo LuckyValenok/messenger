@@ -57,7 +57,6 @@ header {
   height: 10%;
 }
 
-
 section {
   .flex-column-reverse();
   .default();
