@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from "@/store";
 
 const state = {
     user: null,
@@ -23,8 +24,12 @@ const actions = {
     },
     async viewMe({commit}) {
         let res = await axios.get('user/me');
-        if (res.data) {
+        if (res && res.data) {
             await commit('setUser', res.data);
+        } else {
+            await store.dispatch('logOut');
+            await store.dispatch('clearMessages');
+            await store.dispatch('clearAccessToken');
         }
     },
     logOut({commit}) {
@@ -37,6 +42,10 @@ const actions = {
         if (res.data && state.user.name === res.data) {
             await commit('setName', newName);
         }
+    },
+    async deleteUser({dispatch}) {
+        await axios.delete('user/delete');
+        await dispatch('viewMe');
     }
 };
 

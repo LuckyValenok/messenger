@@ -15,7 +15,7 @@
             </div>
             <div class="flex-row" style="justify-content: flex-end; margin: 20px 5px 10px; ">
               <button type="submit" @click="changeNameSubmit">Change</button>
-              <button class="btn-red" type="submit">Delete Profile</button>
+              <button class="btn-red" @click="deleteProfile">Delete Profile</button>
             </div>
           </form>
         </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "UserProfileModal", data: function () {
@@ -34,8 +34,14 @@ export default {
       newName: '',
     }
   },
+  computed: {
+    ...mapGetters({user: "user"})
+  },
+  created() {
+    this.newName = this.user.name;
+  },
   methods: {
-    ...mapActions(['changeName']),
+    ...mapActions(['changeName', 'deleteUser']),
     closeModal: function () {
       this.show = false
     },
@@ -45,7 +51,11 @@ export default {
         return;
       }
       await this.changeName(this.newName);
-      this.newName = '';
+      this.newName = this.user.name;
+    },
+    deleteProfile: async function () {
+      await this.deleteUser();
+      this.$router.push({name: 'login'})
     }
   }
 }

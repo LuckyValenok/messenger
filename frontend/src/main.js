@@ -17,10 +17,8 @@ axios.interceptors.response.use(undefined,
             const originalRequest = error.config;
             if (error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
-                store.dispatch('logOut');
-                store.dispatch('clearMessages');
-                store.dispatch('clearAccessToken');
-                return router.push('/login')
+                store.dispatch('viewMe');
+                return router.push({name: 'login'})
             }
         }
     }
