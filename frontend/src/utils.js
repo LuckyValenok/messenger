@@ -42,3 +42,24 @@ export function convertDateTime(datetime) {
 export function capitalize(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
+
+export function connect(url, type, onmessage) {
+    console.log("Starting connection for " + type + " to WebSocket Server");
+    let connection = new WebSocket(url);
+
+    connection.onmessage = onmessage;
+
+    connection.onclose = function (e) {
+        console.log("Socket(" + type + ") is closed. Reconnect will be attempted in 1 second.", e.reason);
+        setTimeout(function () {
+            connect(url, type, onmessage);
+        }, 1000);
+    };
+
+    connection.onerror = function (err) {
+        console.error("Socket(" + type + ") encountered error: ", err.message, "Closing socket");
+        connection.close();
+    };
+
+    return connection;
+}

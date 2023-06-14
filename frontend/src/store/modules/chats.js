@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {connect} from "@/utils";
 
 const state = {
     chats: [],
@@ -63,16 +64,13 @@ const mutations = {
             state.connectionForChats.close();
         }
 
-        console.log("Starting connection for chats to WebSocket Server")
-        state.connectionForChats = new WebSocket("ws://localhost:8000/ws/user?token=" + localStorage.getItem('access_token'));
-
-        state.connectionForChats.onmessage = event => {
+        state.connectionForChats = connect("ws://localhost:8000/ws/user?token=" + localStorage.getItem('access_token'), "chats", event => {
             let newChat = JSON.parse(event.data);
             state.chats = state.chats.filter(chat => chat.id !== newChat.id);
             if (!newChat.removed) {
                 state.chats.push(newChat);
             }
-        };
+        });
     },
     setSelectChat(state, chat) {
         state.selectChat = chat;
@@ -83,13 +81,10 @@ const mutations = {
             state.connectionForMessages.close();
         }
 
-        console.log("Starting connection for messages to WebSocket Server")
-        state.connectionForMessages = new WebSocket("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'));
-
-        state.connectionForMessages.onmessage = event => {
+        state.connectionForMessages = connect("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'), "messages", event => {
             let data = JSON.parse(event.data);
             state.selectChat.messages.push(data);
-        };
+        });
     },
     setFilter(state, filter) {
         state.filter = filter

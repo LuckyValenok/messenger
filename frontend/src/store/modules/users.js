@@ -19,10 +19,15 @@ const actions = {
     },
     async logIn({dispatch, commit}, user) {
         let res = await axios.post('login/', user);
-        await commit('setAccessToken', res.data.access_token, {root: true})
-        await dispatch('viewMe');
+        if (res) {
+            await commit('setAccessToken', res.data.access_token, {root: true})
+            await dispatch('viewMe');
+        }
     },
-    async viewMe({commit}) {
+    async viewMe({commit, rootState}) {
+        if (!rootState.accessToken) {
+            return;
+        }
         let res = await axios.get('user/me');
         if (res && res.data) {
             await commit('setUser', res.data);
