@@ -45,6 +45,13 @@ const actions = {
     async createChat({commit}, data) {
         let res = await axios.post('chat/new', data);
         await commit('setSelectChat', res.data);
+    },
+    async addMember({state}, username) {
+        await axios.post('chat/add_member/' + state.selectChat.id, null, {
+            params: {
+                username: username
+            }
+        });
     }
 };
 

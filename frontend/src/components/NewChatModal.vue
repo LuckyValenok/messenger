@@ -47,7 +47,7 @@ export default {
     },
     submit: async function () {
       this.closeModal();
-      if (!this.name) {
+      if (!this.name.trim()) {
         return;
       }
       await this.createChat({

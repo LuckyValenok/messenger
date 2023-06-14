@@ -2,7 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from core.db.models import User
-from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id
+from crud.chat import get_chat_by_id, create_chat as crud_create_chat, delete_chat_by_id, change_name_chat_by_id, \
+    add_member as crud_add_member
+from crud.user import get_user_by_login
 from deps import get_current_user, get_db
 from endpoints.websocket import manager
 from exceptions.validation import UserDontHavePermissionsException
@@ -35,6 +37,23 @@ async def change_name_chat(chat_id: int, new_name: str, session: Session = Depen
     if user not in chat.users:
         raise UserDontHavePermissionsException
     return change_name_chat_by_id(session, chat_id, new_name)
+
+
+@router.post("/add_member/{chat_id}")
+async def add_member(chat_id: int, username: str, session: Session = Depends(get_db),
+                     user: User = Depends(get_current_user)):
+    chat = get_chat_by_id(session, chat_id)
+    if user not in chat.users:
+        raise UserDontHavePermissionsException
+    member = get_user_by_login(session, username)
+    try:
+        return crud_add_member(session, chat, member)
+    finally:
+        if chat.messages:
+            scheme = ChatWithLastMessageOutScheme(**chat.__dict__, message=chat.messages[-1]).json()
+        else:
+            scheme = ChatOutScheme(**chat.__dict__).json()
+        await manager.broadcast(scheme, user_id=member.id)
 
 
 @router.delete("/delete/{chat_id}")

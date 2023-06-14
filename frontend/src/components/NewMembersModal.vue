@@ -22,18 +22,29 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "NewMembersModal", data: function () {
     return {
       show: false,
+      name: '',
     }
   },
   methods: {
+    ...mapActions(["addMember"]),
     closeModal: function () {
       this.show = false
+    },
+    submit: async function () {
+      this.closeModal();
+      if (!this.name.trim()) {
+        return;
+      }
+      this.addMember(this.name);
+      this.name = '';
     }
   }
-
 }
 </script>
 
@@ -68,13 +79,10 @@ input::placeholder, h3 {
   &-title {
     color: #6A557B;
   }
-
 }
 
 button {
   margin: 5px;
-
-
 }
 
 button:hover {

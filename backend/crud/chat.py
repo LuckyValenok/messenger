@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from core.db.models import Chat, User
 from exceptions.not_found import ChatNotFoundException
+from exceptions.validation import UserAlreadyInThisChat
 from schemas.chat import Chat as ChatSchema
 
 
@@ -31,6 +32,15 @@ def change_name_chat_by_id(session: Session, chat_id: int, new_name: str) -> str
     chat.name = new_name
     session.commit()
     return prev_name
+
+
+def add_member(session: Session, chat: Chat, user: User):
+    if user in chat.users:
+        raise UserAlreadyInThisChat
+    chat.users.append(user)
+    session.commit()
+    session.refresh(chat)
+    return chat
 
 
 def delete_chat_by_id(session, chat_id: int) -> Chat:

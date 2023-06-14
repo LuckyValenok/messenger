@@ -28,3 +28,8 @@ class LoginAlreadyInUseException(HTTPException):
 class UserDontHavePermissionsException(HTTPException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail="You are not in this chat")
+
+
+class UserAlreadyInThisChat(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail="User already in this chat")

@@ -47,7 +47,7 @@ export default {
     },
     changeNameSubmit: async function () {
       this.closeModal();
-      if (!this.newName) {
+      if (!this.newName.trim()) {
         return;
       }
       await this.changeName(this.newName);
