@@ -29,6 +29,14 @@ const actions = {
     },
     logOut({commit}) {
         commit('setUser', null);
+    },
+    async changeName({commit, state}, newName) {
+        let res = await axios.put('user/change_name', {
+            new_name: newName
+        });
+        if (res.data && state.user.name === res.data) {
+            await commit('setName', newName);
+        }
     }
 };
 
@@ -36,6 +44,9 @@ const mutations = {
     setUser(state, user) {
         state.user = user;
     },
+    setName(state, newName) {
+        state.user.name = newName;
+    }
 };
 
 export default {

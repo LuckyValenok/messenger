@@ -2,7 +2,7 @@ from os import getenv
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
@@ -15,8 +15,3 @@ db_url = f"postgresql://{USER}:{PASSWORD}@localhost:{DB_PORT}/{DB_NAME}"
 
 engine = create_engine(db_url, echo=True)
 session_maker = sessionmaker(engine)
-session = session_maker()
-
-
-def get_session() -> Session:
-    return session

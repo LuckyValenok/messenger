@@ -54,6 +54,8 @@ export default {
         name: this.name,
         chat_type: this.chatType
       });
+      this.name = '';
+      this.chatType = 'private';
     }
   }
 }

@@ -81,5 +81,7 @@ button {
   left: 25%;
 }
 
-
+button:hover {
+  background-color: #aa94b7;
+}
 </style>

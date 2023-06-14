@@ -11,13 +11,12 @@
         <div class="modal-content">
           <form>
             <div class="form-field">
-              <input name="name" type="text" placeholder="your name"/>
+              <input name="name" v-model="newName" type="text" placeholder="your name"/>
             </div>
             <div class="flex-row" style="justify-content: flex-end; margin: 20px 5px 10px; ">
-              <button type="submit" @click="closeModal">Change</button>
+              <button type="submit" @click="changeNameSubmit">Change</button>
               <button class="btn-red" type="submit">Delete Profile</button>
             </div>
-
           </form>
         </div>
       </slot>
@@ -26,16 +25,27 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
 
 export default {
   name: "UserProfileModal", data: function () {
     return {
       show: false,
+      newName: '',
     }
   },
   methods: {
+    ...mapActions(['changeName']),
     closeModal: function () {
       this.show = false
+    },
+    changeNameSubmit: async function () {
+      this.closeModal();
+      if (!this.newName) {
+        return;
+      }
+      await this.changeName(this.newName);
+      this.newName = '';
     }
   }
 }
@@ -97,5 +107,4 @@ button:hover {
 button:active {
   background: #6A557B;
 }
-
 </style>

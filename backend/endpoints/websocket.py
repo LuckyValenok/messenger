@@ -1,9 +1,10 @@
-from fastapi import WebSocket, APIRouter
+from fastapi import WebSocket, APIRouter, Depends
+from sqlalchemy.orm import Session
 from starlette.websockets import WebSocketState
 
 from crud.chat import get_chat_by_id
 from crud.user import get_user_by_id
-from deps import get_current_user_id
+from deps import get_current_user_id, get_db
 from exceptions.validation import UserDontHavePermissionsException
 
 router = APIRouter(prefix="/ws")
@@ -47,10 +48,10 @@ manager = ConnectionManager()
 
 
 @router.websocket("/chat/{chat_id}")
-async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str):
+async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str, session: Session = Depends(get_db)):
     user_id = await get_current_user_id(token)
-    user = get_user_by_id(user_id)
-    chat = get_chat_by_id(chat_id)
+    user = get_user_by_id(session, user_id)
+    chat = get_chat_by_id(session, chat_id)
     if user not in chat.users:
         raise UserDontHavePermissionsException
     await manager.connect(websocket, chat_id=chat_id)
@@ -60,9 +61,9 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, token: str):
 
 
 @router.websocket("/user")
-async def websocket_endpoint(websocket: WebSocket, token: str):
+async def websocket_endpoint(websocket: WebSocket, token: str, session: Session = Depends(get_db)):
     user_id = await get_current_user_id(token)
-    user = get_user_by_id(user_id)
+    user = get_user_by_id(session, user_id)
     await manager.connect(websocket, user_id=user.id)
     while websocket.client_state == WebSocketState.CONNECTED:
         await websocket.receive()

@@ -1,6 +1,13 @@
 from pydantic import BaseModel
 
 
+class NewName(BaseModel):
+    new_name: str
+
+    class Config:
+        orm_mode = True
+
+
 class User(BaseModel):
     login: str
     password: str
