@@ -50,10 +50,12 @@ export function connect(url, type, onmessage) {
     connection.onmessage = onmessage;
 
     connection.onclose = function (e) {
-        console.log("Socket(" + type + ") is closed. Reconnect will be attempted in 1 second.", e.reason);
-        setTimeout(function () {
-            connect(url, type, onmessage);
-        }, 1000);
+        if (e.code !== 3000) {
+            console.log("Socket(" + type + ") is closed. Reconnect will be attempted in 1 second.", e.reason);
+            setTimeout(function () {
+                connect(url, type, onmessage);
+            }, 1000);
+        }
     };
 
     connection.onerror = function (err) {

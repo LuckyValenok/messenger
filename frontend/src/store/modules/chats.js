@@ -61,7 +61,7 @@ const mutations = {
         state.chats = chats;
 
         if (state.connectionForChats) {
-            state.connectionForChats.close();
+            state.connectionForChats.close(3000);
         }
 
         state.connectionForChats = connect("ws://localhost:8000/ws/user?token=" + localStorage.getItem('access_token'), "chats", event => {
@@ -78,7 +78,7 @@ const mutations = {
         localStorage.setItem('selectChatId', chat.id);
 
         if (state.connectionForMessages) {
-            state.connectionForMessages.close();
+            state.connectionForMessages.close(3000);
         }
 
         state.connectionForMessages = connect("ws://localhost:8000/ws/chat/" + chat.id + "?token=" + localStorage.getItem('access_token'), "messages", event => {
